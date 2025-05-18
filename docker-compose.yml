@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: colette_development
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/api
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/colette_development
+    depends_on:
+      - db
+    command: bash -c "rm -f tmp/pids/server.pid && rails s -b 0.0.0.0 -p 3001"
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - "8000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres-data:
