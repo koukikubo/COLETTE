@@ -1,20 +1,29 @@
 # テーブル設計
 
+## user テーブル
+
+| Column   | Type   | Options                      |
+| -------- | ------ | ---------------------------- |
+| email    | string | null: false, unique_key:true |
+| password | string | null: false                  |
+
+### Association
+
+- has_one :staff_member
+
 ## staff_members テーブル
 
-| Column             | Type    | Options     |
-| ------------------ | ------- | ----------- |
-| family_name        | string  | null: false |
-| family_name_kana   | string  | null: false |
-| given_name         | string  | null: false |
-| given_name_kana    | string  | null: false |
-| nick_name          | string  | null: false |
-| email              | string  | null: false |
-| encrypted_password | string  | null: false |
-| position           | integer | null: false |
-| birthday           | date    | null: false |
-| made_in            | integer | null: false |
-| phone              | string  | null: false |
+| Column           | Type    | Options     |
+| ---------------- | ------- | ----------- |
+| family_name      | string  | null: false |
+| family_name_kana | string  | null: false |
+| given_name       | string  | null: false |
+| given_name_kana  | string  | null: false |
+| nick_name        | string  | null: false |
+| position         | integer | null: false |
+| birthday         | date    | null: false |
+| made_in          | integer | null: false |
+| phone            | string  | null: false |
 
 ### Association
 

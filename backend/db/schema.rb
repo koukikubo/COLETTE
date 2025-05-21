@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_14_031737) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_18_033528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_14_031737) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "staff_members", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "family_name"
+    t.string "family_name_kana"
+    t.string "given_name"
+    t.string "given_name_kana"
+    t.string "nick_name"
+    t.string "position"
+    t.date "birthday"
+    t.integer "made_in"
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_staff_members_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -45,4 +61,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_14_031737) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "staff_members", "users"
 end
