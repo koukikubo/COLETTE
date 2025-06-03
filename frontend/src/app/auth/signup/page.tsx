@@ -1,25 +1,22 @@
-"use client"; // クライアントコンポーネントであることを宣言
+"use client";
 
-import { useState } from "react"; // Reactの状態管理用フック
-import { useRouter } from "next/navigation"; // ページ遷移に使用するNext.jsのrouter
+import { useState } from "react";
+import router from "next/router";
 
 export default function SignupPage() {
-  const router = useRouter(); // ページ遷移のためのrouterを初期化
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [error, setError] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState(false);
 
-  // ユーザー入力の状態をuseStateで管理
-  const [email, setEmail] = useState(""); // メールアドレス
-  const [password, setPassword] = useState(""); // パスワード
-  const [passwordConfirmation, setPasswordConfirmation] = useState(""); // パスワード確認
-  const [error, setError] = useState(""); // エラーメッセージ表示用
-
-  // 登録ボタンクリック時の処理
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // フォーム送信時のページリロードを防ぐ
-    setError(""); // エラー初期化
+    e.preventDefault();
+    setError("");
 
     try {
       const res = await fetch("http://localhost:3001/api/v1/auth", {
-        method: "POST", // POSTでユーザー作成APIに送信
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -27,7 +24,7 @@ export default function SignupPage() {
           email,
           password,
           password_confirmation: passwordConfirmation,
-          confirm_success_url: "http://localhost:8000/confirm", // 仮URL
+          confirm_success_url: "http://localhost:8000/auth/confirmed",
         }),
       });
 
@@ -37,71 +34,58 @@ export default function SignupPage() {
           data.errors?.full_messages?.join(", ") || "登録に失敗しました"
         );
       }
-
-      // 成功時はログインページへ遷移
-      router.push("/auth/login");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message); // 型安全にエラーメッセージを取得
-      } else {
-        setError("予期せぬエラーが発生しました"); // fallback用のメッセージ
-      }
+      // ✅ 成功したら success フラグを true に
+      setSignupSuccess(true);
+      router.push("/auth/confirmed");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">新規登録</h1>
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">新規登録</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            メールアドレス
-          </label>
+      {signupSuccess ? (
+        <p className="text-green-600 mt-4">
+          登録が完了しました。メールを確認し、認証リンクをクリックしてください。
+        </p>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
-            className="mt-1 block w-full p-2 border rounded"
+            placeholder="メールアドレス"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            className="w-full p-2 border rounded"
           />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            パスワード
-          </label>
           <input
             type="password"
-            className="mt-1 block w-full p-2 border rounded"
+            placeholder="パスワード"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="w-full p-2 border rounded"
           />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            パスワード（確認）
-          </label>
           <input
             type="password"
-            className="mt-1 block w-full p-2 border rounded"
+            placeholder="パスワード（確認）"
             value={passwordConfirmation}
             onChange={(e) => setPasswordConfirmation(e.target.value)}
             required
+            className="w-full p-2 border rounded"
           />
-        </div>
-
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          登録
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white p-2 rounded"
+          >
+            登録
+          </button>
+          {error && <p className="text-red-600">{error}</p>}
+        </form>
+      )}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 export default function Sidebar() {
   return (
-    <aside className="w-60 bg-white border-r p-4 space-y-4">
+    <aside className="w-80 bg-white border-r p-4 space-y-4">
       <div className="font-semibold text-gray-700">お知らせ</div>
       <ul className="text-sm text-gray-600 space-y-1">
         <li>臨時休業について</li>

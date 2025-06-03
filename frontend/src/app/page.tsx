@@ -1,15 +1,18 @@
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Home() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("access-token")?.value;
-  const client = cookieStore.get("client")?.value;
-  const uid = cookieStore.get("uid")?.value;
+  const { user } = useUser();
+  const router = useRouter();
 
-  if (!token || !client || !uid) {
-    redirect("auth/signup"); // 新規登録ページへ
-  }
+  useEffect(() => {
+    if (user === null) {
+      router.push("/auth/signup");
+    }
+  }, [router, user]);
 
   return (
     <div>
