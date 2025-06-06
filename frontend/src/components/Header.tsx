@@ -1,11 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/UserContext";
+import { clearAuthTokens } from "@/lib/auth";
 
 export default function Header() {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
+  const router = useRouter();
 
+  const handleLogout = () => {
+    clearAuthTokens(); // トークン削除
+    setUser(null); // Contextリセット
+    router.push("/"); // TOPページへ遷移
+  };
   return (
     <header className="bg-white shadow p-4 flex justify-between items-center">
       <div className="text-lg font-bold">COLETTE</div>
@@ -17,9 +25,12 @@ export default function Header() {
             <Link href="/mypage" className="text-blue-500 hover:underline">
               マイページ
             </Link>
-            <Link href="/logout" className="text-gray-500 hover:underline">
+            <button
+              onClick={handleLogout}
+              className="text-gray-500 hover:underline"
+            >
               ログアウト
-            </Link>
+            </button>
           </>
         ) : (
           // 未ログインの場合の表示
