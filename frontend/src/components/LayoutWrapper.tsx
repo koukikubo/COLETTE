@@ -16,10 +16,12 @@ export default function LayoutWrapper({
 
   return (
     <UserProvider>
-      <Header />
-      <div className="flex flex-1">
-        {!isAuthPage && <Sidebar />}
-        <main className="flex-1 p-4 bg-gray-50">{children}</main>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="flex flex-1">
+          {!isAuthPage && <Sidebar />}
+          <main className="flex-1 p-4 bg-gray-50">{children}</main>
+        </div>
       </div>
     </UserProvider>
   );
