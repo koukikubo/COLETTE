@@ -112,10 +112,6 @@ GEM
     devise-i18n (1.13.0)
       devise (>= 4.9.0)
       rails-i18n
-    devise_token_auth (1.2.5)
-      bcrypt (~> 3.0)
-      devise (> 3.5.2, < 5)
-      rails (>= 4.2.0, < 8.1)
     drb (2.2.1)
     erubi (1.13.1)
     globalid (1.2.1)
@@ -251,7 +247,6 @@ DEPENDENCIES
   debug
   devise
   devise-i18n
-  devise_token_auth
   letter_opener_web
   pg (~> 1.1)
   puma (>= 6.0.0)
