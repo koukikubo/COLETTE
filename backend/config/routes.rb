@@ -1,18 +1,24 @@
 Rails.application.routes.draw do
-
-  if Rails.env.development?
-    mount LetterOpenerWeb::Engine, at: "/letter_opener"
-  end
   
   namespace :api do
     namespace :v1 do
-      get "health_check", to: "health_check#index"
-      mount_devise_token_auth_for "User", at: "auth"
-      
-      namespace :current do
-        resource :user, only: [:show] #追加
+      devise_for :users,
+        path: '',
+        path_names: {
+          sign_in: 'login',
+          sign_out: 'logout',
+          registration: 'signup'
+        },
+        controllers: {
+          registrations: 'api/v1/registrations',
+          sessions: 'api/v1/sessions'
+        }
+
+      resources :mypages, only: [:create, :show, :update] do
+        collection do
+          get :me
+        end
       end
     end
-    
   end
 end
