@@ -1,11 +1,8 @@
-// src/app/layout.tsx
+// app/layout.tsx
 import "./globals.css";
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-
-export const metadata = {
-  title: "COLETTE",
-};
+import { ThemeProvider } from "@/components/blocks/theme-provider"; // ←独自のやつを使う
+import { UserProvider } from "@/contexts/UserContext";
+import { AppProviders } from "@/components/layout/AppProviders";
 
 export default function RootLayout({
   children,
@@ -13,13 +10,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body className="flex flex-col h-screen">
-        <Header />
-        <div className="flex flex-1">
-          <Sidebar />
-          <main className="flex-1 p-4 bg-gray-50">{children}</main>
-        </div>
+    <html lang="ja" suppressHydrationWarning>
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <UserProvider>
+            <AppProviders>{children}</AppProviders>
+          </UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

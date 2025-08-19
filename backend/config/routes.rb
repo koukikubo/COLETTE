@@ -1,11 +1,24 @@
 Rails.application.routes.draw do
-  devise_for :users
-
+  
   namespace :api do
     namespace :v1 do
-      post "login",  to: "sessions#create"
-      delete "logout", to: "sessions#destroy"
-      get "me", to: "sessions#me"
+      devise_for :users,
+        path: '',
+        path_names: {
+          sign_in: 'login',
+          sign_out: 'logout',
+          registration: 'signup'
+        },
+        controllers: {
+          registrations: 'api/v1/registrations',
+          sessions: 'api/v1/sessions'
+        }
+
+      resources :mypages, only: [:create, :show, :update] do
+        collection do
+          get :me
+        end
+      end
     end
   end
 end
