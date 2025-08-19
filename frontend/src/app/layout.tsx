@@ -1,6 +1,6 @@
 // app/layout.tsx
 import "./globals.css";
-import { ThemeProvider } from "@/components/blocks/theme-provider"; // ←独自のやつを使う
+import { ThemeProvider } from "@/components/layout/theme-provider";
 import { UserProvider } from "@/contexts/UserContext";
 import { AppProviders } from "@/components/layout/AppProviders";
 

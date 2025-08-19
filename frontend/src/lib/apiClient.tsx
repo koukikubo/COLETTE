@@ -1,13 +1,11 @@
-// src/lib/apiClient.ts
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:3001/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://backend:3001/api/v1",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "X-Requested-With": "XMLHttpRequest",
   },
 });
 

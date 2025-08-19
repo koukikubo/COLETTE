@@ -25,8 +25,18 @@ export default function LoginForm({
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
+  const [mounted, setMounted] = React.useState(false);
   const router = useRouter();
   const { setUser } = useUser();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // Hydration mismatch を避けるため CSR 後に描画
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +60,7 @@ export default function LoginForm({
 
   return (
     <div
+      suppressHydrationWarning
       className={cn(
         "fixed inset-0 flex items-center justify-center bg-black/60 z-50",
         className
@@ -95,7 +106,10 @@ export default function LoginForm({
               />
             </div>
 
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {/* Hydration差分を避ける: 常に<p>を描画 */}
+            <p className="text-sm text-red-500 min-h-[1em]">
+              {error || "\u00A0"}
+            </p>
 
             <Button type="submit" className="w-full">
               ログイン
