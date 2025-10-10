@@ -1,14 +1,27 @@
-// src/app/mypage/edit/page.tsx（Server）
+// app/(protect)/mypages/edit/page.tsx
 import { cookies } from "next/headers";
-import { EditButtonClient } from "@/components/forms/mypage/EditButtonClient";
+import { redirect } from "next/navigation";
+import { MypageEditForm } from "@/components/View/mypage/MypageEditForm";
+import type { Mypage } from "types/api";
+import { apiClientWithSsrCookies } from "@/lib/apiClient";
 
 export default async function EditPage() {
   const cookieStore = cookies();
-  const res = await fetch(`${process.env.API_BASE}/api/v1/mypages/me`, {
-    headers: { cookie: cookieStore.toString() },
-    cache: "no-store",
-  });
-  const mypage = res.ok ? await res.json() : null;
+  const cookieHeader = cookieStore.toString();
 
-  return <EditButtonClient initialValue={mypage} />;
+  const client = apiClientWithSsrCookies(cookieHeader);
+  const res = await client.get("/mypages/me");
+
+  if (res.status === 401 || res.status === 403) {
+    redirect("/auth/login");
+  }
+
+  const mypage: Mypage | null = res.data?.mypage ?? null;
+
+  return (
+    <div className="mx-auto max-w-xl mt-8">
+      <h1 className="text-2xl font-bold mb-6">マイページ編集</h1>
+      <MypageEditForm initialValue={mypage} />
+    </div>
+  );
 }

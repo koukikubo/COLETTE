@@ -1,41 +1,59 @@
-// src/app/(protect)/mypage/page.tsx
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { MypageView } from "@/components/forms/mypage/MypageView";
-import { EditButtonClient } from "@/components/forms/mypage/EditButtonClient";
+import { MypageView } from "@/components/View/mypage/MypageView";
 import type { Mypage } from "types/api";
 
 export const dynamic = "force-dynamic";
 
+type MypageResponse = {
+  user: {
+    id: number;
+    email: string;
+  } | null;
+  mypage: Mypage | null;
+};
+
 export default async function MypagePage() {
   const cookieStore = cookies();
+  console.log("SSR cookies (raw):", cookieStore.getAll());
 
-  const apiBase = process.env.API_BASE ?? "http://backend:3001"; // ← dev想定
-  const url = `${apiBase}/api/v1/mypages/me`;
+  const cookieHeader = cookieStore.toString();
 
-  // デバッグ：Next に届いている Cookie を一度ログして確認
-  // console.log("SSR cookies", cookieStore.getAll().map(c => c.name));
+  // SSRでは内部URLを優先（docker-compose の backend サービス名を利用）
+  const apiBase =
+    process.env.INTERNAL_API_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:3001/api/v1";
+
+  const url = `${apiBase}/mypages/me`;
 
   const res = await fetch(url, {
-    headers: { cookie: cookieStore.toString() }, // ← SSRではこれでOK
+    method: "GET",
+    headers: {
+      Cookie: cookieHeader, // SSR時にCookieをRailsへ渡す
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
     cache: "no-store",
   });
 
+  // 未ログイン時はログイン画面へリダイレクト
   if (res.status === 401 || res.status === 403) {
     redirect("/auth/login");
   }
+
   if (!res.ok) {
     throw new Error(`Failed to load mypage: ${res.status} ${res.statusText}`);
   }
 
-  const mypage: Mypage | null = await res.json();
+  const data: MypageResponse = await res.json();
+  const mypage = data?.mypage ?? null;
 
   return (
     <div className="mx-auto mt-8 max-w-xl space-y-4">
       <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
         マイページ
       </h1>
-      <EditButtonClient initialValue={undefined} />
       <MypageView mypage={mypage} />
     </div>
   );

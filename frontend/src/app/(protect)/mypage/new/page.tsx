@@ -4,10 +4,10 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import apiClient from "@/lib/apiClient";
+import { apiClient } from "@/lib/apiClient";
 import type { Mypage } from "types/api";
 import { useMypage } from "@/app/(protect)/mypage/hooks/useMypage";
-import { PrefectureSelect } from "@/components/forms/prefecture-select";
+import { PrefectureSelect } from "@/components/View/mypage/prefecture-select";
 
 export default function MypageNewPage() {
   const router = useRouter();

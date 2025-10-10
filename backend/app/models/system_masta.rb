@@ -1,0 +1,2 @@
+class SystemMasta < ApplicationRecord
+end

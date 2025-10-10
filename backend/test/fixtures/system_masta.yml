@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  category: MyString
+  code: MyString
+  name: MyString
+  active: false
+  action: MyString
+  user_id: 
+  user_name: MyString
+  target_table: MyString
+  target_id: 
+  before_values: 
+  after_values: 
+  operation_time: 2025-10-06 02:17:45
+
+two:
+  category: MyString
+  code: MyString
+  name: MyString
+  active: false
+  action: MyString
+  user_id: 
+  user_name: MyString
+  target_table: MyString
+  target_id: 
+  before_values: 
+  after_values: 
+  operation_time: 2025-10-06 02:17:45

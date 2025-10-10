@@ -1,33 +1,28 @@
 class Api::V1::MypagesController < ApplicationController
-  before_action :authenticate_api_v1_user!
-
-  
+  skip_before_action :verify_authenticity_token
   def me
-    if current_api_v1_user&.mypage
-      render json: current_api_v1_user.mypage, status: :ok
-    else
-      head :no_content  # 204（未作成）
-    end
+    render json: {
+    user: Api::V1::UserSerializer.new(current_user).serializable_hash,
+    mypage: current_user.mypage ? Api::V1::MypageSerializer.new(current_user.mypage).serializable_hash : nil
+    }, status: :ok
   end
-
   def show
-    # /mypages/:id 用（必要なら）
-    render json: Mypage.find(params[:id]), status: :ok
+    render json: Mypage.find(params[:id]), serializer: Api::V1::MypageSerializer, status: :ok
   end
 
   def create
-    mypage = current_api_v1_user.build_mypage(mypage_params)
+    mypage = current_user.build_mypage(mypage_params)
     if mypage.save
-      render json: mypage, status: :created
+      render json: mypage, serializer: Api::V1::MypageSerializer, status: :created
     else
       render json: { errors: mypage.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
-    mypage = current_api_v1_user.mypage
+    mypage = current_user.mypage
     if mypage.update(mypage_params)
-      render json: mypage, status: :ok
+      render json: mypage, serializer: Api::V1::MypageSerializer, status: :ok
     else
       render json: { errors: mypage.errors.full_messages }, status: :unprocessable_entity
     end

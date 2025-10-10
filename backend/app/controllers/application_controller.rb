@@ -1,17 +1,42 @@
 class ApplicationController < ActionController::Base
-  include Devise::Controllers::Helpers
-  include ActionController::RequestForgeryProtection
   include ActionController::Cookies
+  include ActionController::RequestForgeryProtection
   include ActionController::MimeResponds
-  helper_method :current_user
-  protect_from_forgery with: :exception
-  skip_before_action :verify_authenticity_token, if: :json_request?  # ✅ 条件付きで除外
 
-  before_action :authenticate_api_v1_user!, unless: :devise_controller?
+  protect_from_forgery with: :exception
+
+  before_action :set_current_user
+  before_action :require_login
+
+  after_action :set_csrf_cookie
+
+  helper_method :current_user
 
   private
 
-  def json_request?
-    request.format.json?
+  def set_current_user
+    Current.reset
+    Current.user = User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+
+  def current_user
+    Current.user
+  end
+
+  def require_login
+    return if current_user
+
+    render json: { error: "Unauthorized" }, status: :unauthorized
+  end
+
+  def set_csrf_cookie
+    return unless protect_against_forgery?
+
+    cookies["CSRF-TOKEN"] = {
+      value: form_authenticity_token,
+      same_site: :lax,
+      secure: Rails.env.production?,
+      httponly: false
+    }
   end
 end

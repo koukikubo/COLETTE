@@ -3,19 +3,30 @@
 
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
-import apiClient from "@/lib/apiClient";
+import { apiClient } from "@/lib/apiClient";
 import { useUser } from "@/contexts/UserContext";
 import type { Mypage } from "types/api";
 
+interface MypageResponse {
+  user: {
+    id: number;
+    email: string;
+  } | null;
+  mypage: Mypage | null;
+}
+
 // axios を使った共通 fetcher（Cookie 認証付き）
-const fetcher = (url: string) => apiClient.get(url).then((res) => res.data);
+const fetcher = async (url: string) => {
+  const { data } = await apiClient.get<MypageResponse>(url);
+  return data?.mypage ?? null;
+};
 
 export function useMypage() {
   const router = useRouter();
   const { user } = useUser(); // 認証状態を Context から取得
 
   // SWR を使ったデータ取得
-  const { data, error, isLoading, mutate } = useSWR<Mypage>(
+  const { data, error, isLoading, mutate } = useSWR<Mypage | null>(
     user ? "/mypages/me" : null, // user が存在する時だけ API を叩く
     fetcher,
     {
