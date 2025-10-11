@@ -1,6 +1,6 @@
 "use client";
 import { Label } from "@/components/ui/label";
-import { ThemeToggle } from "@/components/settings/theme-toggle";
+import { ThemeToggle } from "@/components/settings/theme/theme-toggle";
 
 export default function ThemeSection() {
   return (

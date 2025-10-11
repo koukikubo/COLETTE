@@ -2,8 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useState } from "react";
-import BaseCodeSettingsView from "../Views/BaseCodeSettings";
-import MenuSettingsView from "../Views/MenuSettings";
+import BaseCodeSettingsView from "./admin/views/BaseCodeSettings";
+import MenuSettingsView from "./admin/views/MenuSettings";
+
 export default function SystemAdminSettings() {
   const [activeView, setActiveView] = useState<"menu" | "base" | "list">(
     "list"

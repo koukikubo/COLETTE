@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { X, Minus, Maximize2, GripVertical } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import ThemeSection from "./ThemeSection";
-import LanguageSection from "./LanguageSection";
-import AboutSection from "./AboutSection";
-import SystemAdminSettings from "./section/SystemAdminSettings";
+import ThemeSection from "./SystemSettingDialog";
+import LanguageSection from "./SystemSettingDialog";
+import AboutSection from "./SystemSettingDialog";
+import SystemAdminSettings from "./SystemSettingDialog";
 
 type Props = {
   open: boolean;
@@ -120,14 +120,36 @@ export default function SystemSettingDialog({ open, onClose }: Props) {
                     <CardTitle className="text-lg">システム設定</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <ThemeSection />
-                    <LanguageSection />
-                    <AboutSection />
+                    <ThemeSection
+                      open={false}
+                      onClose={function (): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />
+                    <LanguageSection
+                      open={false}
+                      onClose={function (): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />
+                    <AboutSection
+                      open={false}
+                      onClose={function (): void {
+                        throw new Error("Function not implemented.");
+                      }}
+                    />
                   </CardContent>
                 </Card>
               )}
 
-              {activeTab === "admin" && <SystemAdminSettings />}
+              {activeTab === "admin" && (
+                <SystemAdminSettings
+                  open={false}
+                  onClose={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                />
+              )}
             </main>
           </div>
         )}
