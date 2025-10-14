@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import SystemSettingDialog from "@/components/settings/SystemSettingDialog";
+import SystemSettingDialog from "@/components/settings/dialogs/SystemSettingDialog";
 
 export default function SettingsPage() {
   const [open, setOpen] = useState(true);
