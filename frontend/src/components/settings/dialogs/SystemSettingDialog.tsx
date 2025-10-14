@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { X, Minus, Maximize2, GripVertical } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import ThemeSection from "./SystemSettingDialog";
-import LanguageSection from "./SystemSettingDialog";
-import AboutSection from "./SystemSettingDialog";
-import SystemAdminSettings from "./SystemSettingDialog";
+import ThemeSection from "../common/sections/ThemeSection";
+import LanguageSection from "../common/sections/LanguageSection";
+import AboutSection from "../common/sections/AboutSection";
+import SystemAdminSettings from "../SystemAdminSettings";
 
 type Props = {
   open: boolean;
@@ -120,36 +120,14 @@ export default function SystemSettingDialog({ open, onClose }: Props) {
                     <CardTitle className="text-lg">システム設定</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <ThemeSection
-                      open={false}
-                      onClose={function (): void {
-                        throw new Error("Function not implemented.");
-                      }}
-                    />
-                    <LanguageSection
-                      open={false}
-                      onClose={function (): void {
-                        throw new Error("Function not implemented.");
-                      }}
-                    />
-                    <AboutSection
-                      open={false}
-                      onClose={function (): void {
-                        throw new Error("Function not implemented.");
-                      }}
-                    />
+                    <ThemeSection />
+                    <LanguageSection />
+                    <AboutSection />
                   </CardContent>
                 </Card>
               )}
 
-              {activeTab === "admin" && (
-                <SystemAdminSettings
-                  open={false}
-                  onClose={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
-                />
-              )}
+              {activeTab === "admin" && <SystemAdminSettings />}
             </main>
           </div>
         )}

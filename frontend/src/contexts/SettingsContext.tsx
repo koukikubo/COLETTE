@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState } from "react";
-import SystemSettingDialog from "@/components/settings/SystemSettingDialog";
+import SystemSettingDialog from "@/components/settings/dialogs/SystemSettingDialog";
 
 const SettingsContext = createContext({
   openSettings: () => {},

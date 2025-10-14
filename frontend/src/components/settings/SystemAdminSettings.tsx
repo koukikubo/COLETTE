@@ -4,11 +4,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import BaseCodeSettingsView from "./admin/views/BaseCodeSettings";
 import MenuSettingsView from "./admin/views/MenuSettings";
+import BusinessDateSettingView from "./admin/views/BusinessDateSettingView";
 
 export default function SystemAdminSettings() {
-  const [activeView, setActiveView] = useState<"menu" | "base" | "list">(
-    "list"
-  );
+  const [activeView, setActiveView] = useState<
+    "menu" | "base" | "list" | "businessDate"
+  >("list");
 
   if (activeView === "base") {
     return <BaseCodeSettingsView onBack={() => setActiveView("list")} />;
@@ -16,6 +17,9 @@ export default function SystemAdminSettings() {
 
   if (activeView === "menu") {
     return <MenuSettingsView onBack={() => setActiveView("list")} />;
+  }
+  if (activeView === "businessDate") {
+    return <BusinessDateSettingView onBack={() => setActiveView("list")} />;
   }
 
   // === リンク一覧（初期画面） ===
@@ -38,6 +42,13 @@ export default function SystemAdminSettings() {
           onClick={() => setActiveView("menu")}
         >
           メニュー設定
+        </Button>
+        <Button
+          variant="outline"
+          className="w-full justify-start"
+          onClick={() => setActiveView("businessDate")}
+        >
+          業務日付設定
         </Button>
       </CardContent>
     </Card>
