@@ -1,14 +1,5 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useState } from "react";
-import SystemSettingDialog from "@/components/settings/dialogs/SystemSettingDialog";
-
-export default function SettingsPage() {
-  const [open, setOpen] = useState(true);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return <SystemSettingDialog open={open} onClose={handleClose} />;
+export default function SettingsIndexPage() {
+  redirect("/settings/common");
 }

@@ -3,14 +3,18 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { MypageEditForm } from "@/components/View/mypage/MypageEditForm";
 import type { Mypage } from "types/api";
-import { apiClientWithSsrCookies } from "@/lib/apiClient";
+import { apiClientWithSsrCookies } from "@/lib/api/Client";
+
+type MypageResponse = {
+  mypage: Mypage | null;
+};
 
 export default async function EditPage() {
   const cookieStore = cookies();
   const cookieHeader = cookieStore.toString();
 
   const client = apiClientWithSsrCookies(cookieHeader);
-  const res = await client.get("/mypages/me");
+  const res = await client.get<MypageResponse>("/mypage/mypages/me");
 
   if (res.status === 401 || res.status === 403) {
     redirect("/auth/login");

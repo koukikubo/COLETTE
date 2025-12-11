@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { Mypage } from "types/api";
 import { Button } from "@/components/ui/button";
 import { PrefectureSelect } from "./prefecture-select";
-import apiClient from "@/lib/apiClient";
+import apiClient from "@/lib/api/Client";
 import { useRouter } from "next/navigation";
 
 const textFields: { label: string; name: keyof Mypage; type: string }[] = [
@@ -48,8 +48,8 @@ export function MypageEditForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await apiClient.put(`/mypages/${form.id}`, { mypage: form });
-      router.push("/mypage");
+      await apiClient.put(`/mypage/mypages/${form.id}`, { mypage: form });
+      router.push("/");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {

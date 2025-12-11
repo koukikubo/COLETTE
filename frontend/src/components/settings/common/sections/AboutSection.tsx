@@ -1,15 +1,32 @@
 "use client";
-import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section className="space-y-2 rounded-lg border bg-muted/5 p-3 md:p-4">
-      <div className="flex items-center gap-2">
-        <Info className="size-4" />
-        <Label className="font-medium">About</Label>
-      </div>
-      <p className="text-xs text-muted-foreground">バージョン 1.0.0</p>
-    </section>
+    <Card className="border border-border/70 shadow-sm">
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <Info className="size-4 text-primary" />
+          <CardTitle className="text-base">バージョン情報</CardTitle>
+        </div>
+        <CardDescription>COLETTE Platform v1.0.0</CardDescription>
+      </CardHeader>
+      <CardContent className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          最終更新: 2025/11/01
+        </p>
+        <Button variant="outline" size="sm">
+          リリースノート
+        </Button>
+      </CardContent>
+    </Card>
   );
 }

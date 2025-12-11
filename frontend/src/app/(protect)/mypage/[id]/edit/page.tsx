@@ -1,40 +1,38 @@
+import { isAxiosError } from "@/lib/isAxiosError";
 import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { MypageView } from "@/components/View/mypage/MypageView";
+import { apiClientWithSsrCookies } from "@/lib/api/Client";
 import type { Mypage } from "types/api";
 
-export default async function OtherMypage({
+export default async function OtherMypageEdit({
   params,
 }: {
   params: { id: string };
 }) {
-  const cookieStore = cookies();
-  const cookieHeader = cookieStore.toString();
+  const client = apiClientWithSsrCookies(cookies().toString());
 
-  const res = await fetch(
-    `${
-      process.env.INTERNAL_API_URL ?? "http://localhost:3001/api/v1"
-    }/mypages/${params.id}`,
-    {
-      headers: {
-        Cookie: cookieHeader,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      cache: "no-store",
+  try {
+    const res = await client.get<Mypage>(`/mypage/mypages/${params.id}`);
+    const mypage = res.data ?? null;
+
+    return (
+      <div className="mx-auto max-w-xl mt-8">
+        <h1 className="text-2xl font-bold mb-6">ユーザーのマイページ</h1>
+        <MypageView mypage={mypage} />
+      </div>
+    );
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      const status = error.response?.status;
+      if (status === 404) {
+        notFound();
+      }
+      if (status === 401 || status === 403) {
+        redirect("/auth/login");
+      }
     }
-  );
 
-  if (!res.ok) {
-    notFound();
+    throw error;
   }
-
-  const mypage: Mypage | null = await res.json();
-
-  return (
-    <div className="mx-auto max-w-xl mt-8">
-      <h1 className="text-2xl font-bold mb-6">ユーザーのマイページ</h1>
-      <MypageView mypage={mypage} />
-    </div>
-  );
 }

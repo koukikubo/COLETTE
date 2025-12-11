@@ -3,8 +3,7 @@ class ApplicationController < ActionController::Base
   include ActionController::RequestForgeryProtection
   include ActionController::MimeResponds
 
-  protect_from_forgery with: :exception
-
+  protect_from_forgery with: :null_session
   before_action :set_current_user
   before_action :require_login
 

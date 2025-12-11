@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { isAxiosError } from "@/lib/isAxiosError";
+import { getErrorMessage } from "@/lib/getErrorMessage";
 import { SignupResponse } from "types/api";
-import { apiClient } from "@/lib/apiClient";
+import { apiClient } from "@/lib/api/Client";
 import { cn } from "@/lib/utils";
 import {
   Card,
@@ -32,7 +33,7 @@ export default function SignupForm({
     setError("");
 
     try {
-      await apiClient.post<SignupResponse>("/signup", {
+      await apiClient.post<SignupResponse>("/auth/signup", {
         user: {
           email,
           password,
@@ -42,11 +43,14 @@ export default function SignupForm({
       alert("新規登録が完了しました。ログインしてください。");
       router.push("/auth/login");
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const messages = err.response?.data?.errors?.full_messages;
+      if (isAxiosError(err)) {
+        const errorData = err.response?.data as
+          | { errors?: { full_messages?: string[] } }
+          | undefined;
+        const messages = errorData?.errors?.full_messages;
         setError(messages?.join(", ") || "登録に失敗しました");
       } else {
-        setError("予期しないエラーが発生しました");
+        setError(getErrorMessage(err));
       }
     }
   };

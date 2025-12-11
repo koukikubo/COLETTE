@@ -1,4 +1,4 @@
-import CustomerForm from "@/components/View/customers/RegistrationsForm";
+import CustomerForm from "@/components/View/customers/CustomerNew";
 
 export default async function CustomerNewPage() {
   // const ranks = await fetchRanks();

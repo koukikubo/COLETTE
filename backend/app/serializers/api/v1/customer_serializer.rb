@@ -12,5 +12,4 @@ class CustomerSerializer < ActiveModel::Serializer
               :created_at,
               :updated_at
 
-  belongs_to :mypage
 end

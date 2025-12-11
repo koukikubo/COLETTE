@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 export function SiteHeader() {
   return (
@@ -14,8 +15,22 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <Link href="/" className="text-base font-semibold">
-          CORETTE顧客管理システム
+
+        <Link href="/" className="text-base font-semibold flex items-center">
+          <Image
+            src="/asai_light.jpg"
+            alt="ロゴ"
+            width={65}
+            height={50}
+            className="w-auto object-contain dark:hidden"
+          />
+          <Image
+            src="/asai_logo.svg"
+            alt="浅井顧客予約管理システム"
+            width={180}
+            height={120}
+            className="object-contain hidden dark:block"
+          />
         </Link>
       </div>
     </header>

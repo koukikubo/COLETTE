@@ -1,18 +1,31 @@
 "use client";
-import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Globe } from "lucide-react";
 
 export default function LanguageSection() {
   return (
-    <section className="space-y-2 rounded-lg border bg-muted/5 p-3 md:p-4">
-      <div className="flex items-center gap-2">
-        <Globe className="size-4" />
-        <Label className="font-medium">言語</Label>
-      </div>
-      <div className="flex items-center justify-between rounded-md border px-3 py-2">
-        <span className="text-sm">日本語</span>
-        <span className="text-xs text-muted-foreground">固定</span>
-      </div>
-    </section>
+    <Card className="border border-border/70 shadow-sm">
+      <CardHeader className="space-y-1">
+        <div className="flex items-center gap-2 text-primary">
+          <Globe className="size-4" />
+          <CardTitle className="text-base">言語</CardTitle>
+        </div>
+        <CardDescription>
+          表示言語は現在日本語に固定されています。
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex items-center justify-between">
+        <Badge variant="outline">日本語</Badge>
+        <Button variant="ghost" size="sm" disabled></Button>
+      </CardContent>
+    </Card>
   );
 }

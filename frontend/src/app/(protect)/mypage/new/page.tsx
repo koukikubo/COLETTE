@@ -3,10 +3,11 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-import { apiClient } from "@/lib/apiClient";
+import { isAxiosError } from "@/lib/isAxiosError";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import { apiClient } from "@/lib/api/Client";
 import type { Mypage } from "types/api";
-import { useMypage } from "@/app/(protect)/mypage/hooks/useMypage";
+import { useMypage } from "@/hooks/useMypage";
 import { PrefectureSelect } from "@/components/View/mypage/prefecture-select";
 
 export default function MypageNewPage() {
@@ -47,14 +48,17 @@ export default function MypageNewPage() {
 
     try {
       setSubmitting(true);
-      await apiClient.post("/mypages", { mypage: form });
+      await apiClient.post("/mypage/mypages", { mypage: form });
       router.push("/mypage");
     } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const messages = err.response?.data?.errors;
+      if (isAxiosError(err)) {
+        const responseData = err.response?.data as
+          | { errors?: string[] }
+          | undefined;
+        const messages = responseData?.errors;
         setFormError(messages?.join(", ") || "登録に失敗しました");
       } else {
-        setFormError("予期しないエラーが発生しました");
+        setFormError(getErrorMessage(err));
       }
     } finally {
       setSubmitting(false);

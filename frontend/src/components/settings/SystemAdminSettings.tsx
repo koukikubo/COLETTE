@@ -1,56 +1,125 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { useState } from "react";
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Layers, Store, Utensils } from "lucide-react";
+
 import BaseCodeSettingsView from "./admin/views/BaseCodeSettings";
 import MenuSettingsView from "./admin/views/MenuSettings";
-import BusinessDateSettingView from "./admin/views/BusinessDateSettingView";
+import ShopInfoSettingView from "./admin/views/ShopInfoSetting";
+
+import { useStandardMastaCount } from "@/hooks/useStandardMastaCount";
 
 export default function SystemAdminSettings() {
-  const [activeView, setActiveView] = useState<
-    "menu" | "base" | "list" | "businessDate"
-  >("list");
+  const count = useStandardMastaCount();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  if (activeView === "base") {
-    return <BaseCodeSettingsView onBack={() => setActiveView("list")} />;
-  }
+  const highlights = useMemo(
+    () => [
+      {
+        title: "店舗",
+        value: "基本情報",
+        icon: Store,
+        description: "住所や営業時間などを管理",
+      },
+      {
+        title: "基本コード",
+        value: count !== null ? `${count}件` : "読み込み中…",
+        icon: Layers,
+        description: "システム共通の項目などを設定できます。",
+      },
+      {
+        title: "メニュー",
+        value: "Coming soon",
+        icon: Utensils,
+        description: "商品マスタや価格設定",
+      },
+    ],
+    [count]
+  );
 
-  if (activeView === "menu") {
-    return <MenuSettingsView onBack={() => setActiveView("list")} />;
-  }
-  if (activeView === "businessDate") {
-    return <BusinessDateSettingView onBack={() => setActiveView("list")} />;
-  }
+  type TabValue = "shop" | "base" | "menu";
+  const allowedTabs = useMemo<TabValue[]>(() => ["shop", "base", "menu"], []);
+  const resolveTab = useCallback(
+    (value: string | null): TabValue => {
+      return allowedTabs.includes(value as TabValue)
+        ? (value as TabValue)
+        : "shop";
+    },
+    [allowedTabs]
+  );
 
-  // === リンク一覧（初期画面） ===
+  const [tab, setTab] = useState<TabValue>(() =>
+    resolveTab(searchParams.get("section"))
+  );
+
+  useEffect(() => {
+    const section = resolveTab(searchParams.get("section"));
+    if (section !== tab) {
+      setTab(section);
+    }
+  }, [searchParams, tab, resolveTab]);
+
+  const handleTabChange = (value: string) => {
+    const nextTab = resolveTab(value);
+    setTab(nextTab);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("section", nextTab);
+    router.replace(`/settings/admin?${params.toString()}`, { scroll: false });
+  };
+
   return (
-    <Card className="border-0 shadow-none bg-transparent">
-      <CardHeader>
-        <CardTitle>システム管理設定</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Button
-          variant="outline"
-          className="w-full justify-start"
-          onClick={() => setActiveView("base")}
-        >
-          基本コードマスタ設定
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full justify-start"
-          onClick={() => setActiveView("menu")}
-        >
-          メニュー設定
-        </Button>
-        <Button
-          variant="outline"
-          className="w-full justify-start"
-          onClick={() => setActiveView("businessDate")}
-        >
-          業務日付設定
-        </Button>
-      </CardContent>
-    </Card>
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-3">
+        {highlights.map((item) => (
+          <Card key={item.title} className="shadow-sm">
+            <CardContent className="flex items-center gap-3 p-4">
+              <div className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <item.icon className="size-5" />
+              </div>
+              <div>
+                <p className="text-xs uppercase text-muted-foreground">
+                  {item.title}
+                </p>
+                <CardTitle className="text-lg font-semibold">
+                  {item.value}
+                </CardTitle>
+                <p className="text-xs text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Tabs value={tab} onValueChange={handleTabChange} className="space-y-4">
+        <TabsList className="grid w-full gap-2 bg-muted/40 p-1 md:grid-cols-3">
+          <TabsTrigger value="shop">店舗情報</TabsTrigger>
+          <TabsTrigger value="base">基本コード</TabsTrigger>
+          <TabsTrigger value="menu">メニュー</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="shop" className="space-y-4">
+          <Badge variant="outline" className="w-fit">
+            店舗マスタ
+          </Badge>
+          <ShopInfoSettingView />
+        </TabsContent>
+
+        <TabsContent value="base">
+          <BaseCodeSettingsView initialData={[]} />
+        </TabsContent>
+
+        <TabsContent value="menu">
+          <MenuSettingsView />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }

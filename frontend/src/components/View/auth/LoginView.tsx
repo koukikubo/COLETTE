@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import { useUser } from "@/contexts/UserContext";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { apiClient } from "@/lib/apiClient";
+import { apiClient } from "@/lib/api/Client";
 import { LoginResponse } from "types/api";
 import { cn } from "@/lib/utils";
 import {
@@ -17,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { isAxiosError } from "@/lib/isAxiosError";
+import { getErrorMessage } from "@/lib/getErrorMessage";
 
 export default function LoginForm({
   className,
@@ -43,21 +44,20 @@ export default function LoginForm({
     setError("");
 
     try {
-      const { data } = await apiClient.post<LoginResponse>("/login", {
+      const { data } = await apiClient.post<LoginResponse>("/auth/login", {
         user: { email, password },
       });
-      console.log("CSR /login response:", data);
-
       // ブラウザ Cookie 確認用
-      console.log("document.cookie after login:", document.cookie);
       setUser(data.user);
       router.push("/");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        const message = err.response?.data?.error || "ログインに失敗しました。";
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        const message =
+          (error.response?.data as { error?: string })?.error ||
+          "ログインに失敗しました。";
         setError(message);
       } else {
-        setError("予期しないエラーが発生しました。");
+        setError(getErrorMessage(error));
       }
     }
   };

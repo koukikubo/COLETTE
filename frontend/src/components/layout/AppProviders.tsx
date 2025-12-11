@@ -4,7 +4,6 @@ import * as React from "react";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/sidebar";
 import SiteHeader from "@/components/layout/header";
-import { SettingsProvider } from "../../contexts/SettingsContext";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -24,14 +23,12 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties
       }
     >
-      <SettingsProvider>
-        <AppSidebar />
+      <AppSidebar />
 
-        <SidebarInset>
-          <SiteHeader />
-          {children}
-        </SidebarInset>
-      </SettingsProvider>
+      <SidebarInset>
+        <SiteHeader />
+        {children}
+      </SidebarInset>
     </SidebarProvider>
   );
 }

@@ -1,25 +1,45 @@
+import { ssrFetch } from "@/lib/api/ssrAuth";
+import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import { cookies } from "next/headers";
+import { isAxiosError } from "@/lib/isAxiosError";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import CustomerList from "@/components/View/customers/CustomerList";
-import { cookies } from "next/headers";
-import { apiClientWithSsrCookies } from "@/lib/apiClient";
+import CustomerSearch from "@/components/View/customers/CustomerSearch";
 
 type Stats = {
   total: number;
   today: number;
-  vip: number;
+  vip?: number;
 };
 
-export default async function CustomerDashboard() {
-  const cookieHeader = cookies().toString(); // SSRでCookie取得
+export default async function Page() {
+  await ssrFetch("/auth/session");
+
+  const cookieHeader = cookies().toString();
   const client = apiClientWithSsrCookies(cookieHeader);
-  const { data: stats } = await client.get<Stats>("/customers/stats");
+
+  let stats: Stats = { total: 0, today: 0 };
+  try {
+    const res = await client.get<Stats>("/customer/customers/stats");
+    stats = res.data;
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      const status = error.response?.status;
+      if (status === 401 || status === 403) {
+        throw error;
+      }
+    }
+  }
 
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">顧客管理</h1>
 
-      {/* 概要パネル */}
+      <Button asChild>
+        <Link href="/customers/new">新規登録</Link>
+      </Button>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="rounded-lg border p-4">
           <h2 className="text-sm text-muted-foreground">総顧客数</h2>
@@ -37,16 +57,7 @@ export default async function CustomerDashboard() {
         </div>
       </div>
 
-      <div>
-        <Button asChild>
-          <Link href="/customers/new">新規登録</Link>
-        </Button>
-      </div>
-
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold">最近登録された顧客</h2>
-        <CustomerList />
-      </div>
+      <CustomerSearch />
     </div>
   );
 }

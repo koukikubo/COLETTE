@@ -4,7 +4,8 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:3001/api/:path*", // Rails API
+        // コンテナ間通信はサービス名:ポート。APIバージョンが /api/v1 の場合はそれを含める
+        destination: "http://backend:3001/api/v1/:path*",
       },
     ];
   },

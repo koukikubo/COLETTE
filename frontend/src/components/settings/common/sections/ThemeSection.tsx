@@ -1,17 +1,31 @@
 "use client";
-import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/settings/theme/theme-toggle";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Moon } from "lucide-react";
 
 export default function ThemeSection() {
   return (
-    <section className="space-y-2 rounded-lg border bg-muted/5 p-3 md:p-4">
-      <div className="flex items-center justify-between">
-        <Label className="font-medium">ダークモード</Label>
+    <Card className="border border-border/70 shadow-sm">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div className="space-y-1">
+          <CardTitle className="text-base">テーマ</CardTitle>
+          <CardDescription>ライト / ダークを即座に切り替え</CardDescription>
+        </div>
+        <Badge variant="secondary" className="gap-1">
+          <Moon className="size-3" />
+          Live
+        </Badge>
+      </CardHeader>
+      <CardContent className="flex items-center justify-between">
         <ThemeToggle />
-      </div>
-      <p className="text-xs text-muted-foreground">
-        アプリ全体の配色を切り替えます（ライト/ダーク）。
-      </p>
-    </section>
+      </CardContent>
+    </Card>
   );
 }

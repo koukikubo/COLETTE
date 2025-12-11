@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # ポート公開
-EXPOSE 3000
+EXPOSE 8000
 
 # サーバー起動（App Router 対応）
-CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
+CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0", "-p", "8000"]

@@ -1,37 +1,42 @@
 import "./globals.css";
 import type { ReactNode } from "react";
+import { isAxiosError } from "@/lib/isAxiosError";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/settings/theme/theme-provider";
 import { UserProvider } from "@/contexts/UserContext";
 import { AppProviders } from "@/components/layout/AppProviders";
+import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import type { LoginResponse } from "types/api";
+
+export const metadata = {
+  title: "浅井顧客予約管理システム",
+  description: "予約管理SaaS for salon",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
+};
 
 async function loadInitialUser(cookieHeader: string | undefined) {
   if (!cookieHeader) {
     return null;
   }
 
-  const apiBase =
-    process.env.INTERNAL_API_URL ||
-    process.env.NEXT_PUBLIC_API_URL ||
-    "http://localhost:3001/api/v1";
+  const client = apiClientWithSsrCookies(cookieHeader);
 
   try {
-    const response = await fetch(`${apiBase}/session`, {
-      headers: {
-        Cookie: cookieHeader,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      cache: "no-store",
+    const { data } = await client.get<LoginResponse>("/auth/session", {
+      withCredentials: true,
     });
-
-    if (!response.ok) {
-      return null;
-    }
-
-    const data = await response.json();
     return data?.user ?? null;
-  } catch (error) {
+  } catch (error: unknown) {
+    if (isAxiosError(error)) {
+      const status = error.response?.status;
+      if (status === 401 || status === 403) {
+        return null;
+      }
+    }
     console.error("Failed to load current session", error);
     return null;
   }

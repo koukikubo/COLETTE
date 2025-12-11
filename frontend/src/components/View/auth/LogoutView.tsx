@@ -1,12 +1,12 @@
 "use client";
 
-import { apiClient } from "@/lib/apiClient";
+import { apiClient } from "@/lib/api/Client";
 
 export default function LogoutButton() {
   const handleLogout = async () => {
     try {
-      await apiClient.delete("/logout");
-      window.location.href = "/";
+      await apiClient.delete("/auth/logout");
+      window.location.href = "/auth/login";
     } catch (error) {
       console.error("ログアウトに失敗しました", error);
     }

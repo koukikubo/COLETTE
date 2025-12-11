@@ -10,15 +10,10 @@ import {
 import { PREFECTURES } from "@/constants/prefectures";
 
 type Props = {
-  /** 現在値（例: "東京都"） */
   value: string;
-  /** 値が変わったときに呼ばれる */
   onChange: (value: string) => void;
-  /** 原生 required を効かせたい時は true（hidden と同期します） */
   required?: boolean;
-  /** ラベル文言を差し替えたい場合に */
   label?: string;
-  /** trigger に渡す追加クラス */
   className?: string;
 };
 
@@ -52,7 +47,6 @@ export function PrefectureSelect({
         </SelectContent>
       </Select>
 
-      {/* Radix Select は required が効かないので hidden と同期して原生バリデーション */}
       {required && (
         <input type="hidden" name="made_in" value={value} required />
       )}
