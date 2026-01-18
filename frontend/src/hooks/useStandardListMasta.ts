@@ -1,14 +1,12 @@
-// hooks/useStandardListMasta.ts
 import { useState, useEffect } from "react";
 import { StandardListMasta } from "types/setting";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 
 export function useStandardListMasta(codeId: string) {
   const [lists, setLists] = useState<StandardListMasta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // 次の選択肢コードを計算
   const calculateNextListCode = (): string => {
     if (lists.length === 0) return "1";
 
@@ -21,7 +19,6 @@ export function useStandardListMasta(codeId: string) {
     return String(maxCode + 1);
   };
 
-  // データ取得
   useEffect(() => {
     if (!codeId) return;
 
@@ -50,7 +47,6 @@ export function useStandardListMasta(codeId: string) {
     error,
     nextListCode: calculateNextListCode(),
     refetch: () => {
-      // 再取得用の関数
       if (codeId) {
         const fetchLists = async () => {
           try {
