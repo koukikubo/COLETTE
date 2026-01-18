@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { StandardMasta, StandardListMasta } from "types/setting";
 
 export default function StandardListMastasPage() {
@@ -148,6 +148,7 @@ export default function StandardListMastasPage() {
                     <th className="px-4 py-3 text-left font-medium">
                       選択肢名称
                     </th>
+                    <th className="px-4 py-3 text-left font-medium">備考</th>
                     <th className="px-4 py-3 text-left font-medium">状態</th>
                     <th className="px-4 py-3 text-right font-medium">操作</th>
                   </tr>
@@ -159,6 +160,7 @@ export default function StandardListMastasPage() {
                         {item.list_code}
                       </td>
                       <td className="px-4 py-3">{item.name}</td>
+                      <td className="px-4 py-3">{item.remarks}</td>
                       <td className="px-4 py-3">
                         <Badge variant={item.enabled ? "default" : "secondary"}>
                           {item.enabled ? "有効" : "無効"}

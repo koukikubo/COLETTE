@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { StandardMasta } from "@/types/setting";
 
 export function useStandardMastaCount() {

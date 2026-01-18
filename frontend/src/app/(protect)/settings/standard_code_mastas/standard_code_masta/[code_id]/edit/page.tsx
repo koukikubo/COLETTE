@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { StandardMasta } from "@/types/setting";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,7 +52,6 @@ export default function StandardMastaEditPage() {
 
   return (
     <div className="space-y-6">
-      {/* ===== ヘッダー ===== */}
       <SettingsHero
         title={`基本コード編集：${data.name}（${data.base_code}）`}
         description="ここで基本情報の編集・更新ができます。"
@@ -64,16 +63,13 @@ export default function StandardMastaEditPage() {
         action={
           <Button
             variant="secondary"
-            onClick={() =>
-              router.push(`/settings/standard_code_masta/${code_id}/options`)
-            }
+            onClick={() => router.push("/settings/admin?section=base")}
           >
-            選択肢一覧へ
+            基本コード一覧へ
           </Button>
         }
       />
 
-      {/* ===== 編集フォーム ===== */}
       <div className="space-y-4 border rounded-lg p-6">
         <div>
           <label className="block text-sm font-medium mb-1">名称</label>

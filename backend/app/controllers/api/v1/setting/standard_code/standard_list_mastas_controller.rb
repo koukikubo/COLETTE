@@ -3,7 +3,7 @@ class Api::V1::Setting::StandardCode::StandardListMastasController < Application
   before_action :set_standard_masta
 
   def index
-    render json: @standard_masta.standard_list_mastas
+    render json: @standard_masta.standard_list_mastas.order(:position)
   end
 
   def create

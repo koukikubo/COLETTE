@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+
 import {
   Card,
   CardHeader,
@@ -20,24 +21,45 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { useStandardMasta } from "@/hooks/useStandardMasta";
+
 import { StandardMasta } from "@/types/setting";
+import { fetchStandardMastas } from "@/lib/api/standard";
 
 type EnabledFilter = "all" | "true" | "false";
+
 type Props = {
   initialData: StandardMasta[];
 };
 
 export default function BaseCodeSettingsView({ initialData }: Props) {
-  const { data, loading, fetchStandardMasta } = useStandardMasta(initialData);
+  const router = useRouter();
+  const [data, setData] = useState<StandardMasta[]>(
+    Array.isArray(initialData) ? initialData : []
+  );
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [enabled, setEnabled] = useState<EnabledFilter>("true");
-  const router = useRouter();
 
+  const fetchStandardMasta = useCallback(
+    async (query: string, enabled: string) => {
+      setLoading(true);
+      try {
+        const data = await fetchStandardMastas({
+          query,
+          enabled,
+        });
+        setData(data);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  // 初回のみ取得（無限ループしない）
   useEffect(() => {
     fetchStandardMasta("", "true");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchStandardMasta]);
 
   const handleSearch = () => {
     const filter = enabled === "all" ? "" : enabled;
@@ -61,13 +83,16 @@ export default function BaseCodeSettingsView({ initialData }: Props) {
           新規登録
         </Button>
       </CardHeader>
+
       <CardContent className="space-y-6">
+        {/* 検索 */}
         <div className="grid gap-3 md:grid-cols-[2fr_minmax(120px,1fr)_auto]">
           <Input
             placeholder="選択肢タイトルで検索..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
+
           <Select
             value={enabled}
             onValueChange={(value: EnabledFilter) => setEnabled(value)}
@@ -81,17 +106,20 @@ export default function BaseCodeSettingsView({ initialData }: Props) {
               <SelectItem value="false">無効</SelectItem>
             </SelectContent>
           </Select>
+
           <Button disabled={loading} onClick={handleSearch} className="gap-2">
             <Search className="size-4" /> 検索
           </Button>
         </div>
 
+        {/* 一覧 */}
         <div className="overflow-hidden rounded-lg border">
           <table className="w-full text-sm">
             <thead className="bg-muted/50 text-muted-foreground">
               <tr>
                 <th className="px-3 py-2 text-left font-medium">コード</th>
                 <th className="px-3 py-2 text-left font-medium">名称</th>
+                <th className="px-3 py-2 text-left font-medium">備考</th>
                 <th className="px-3 py-2 text-left font-medium">状態</th>
                 <th className="px-3 py-2 text-right font-medium">操作</th>
               </tr>
@@ -100,7 +128,7 @@ export default function BaseCodeSettingsView({ initialData }: Props) {
               {loading ? (
                 <tr>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     className="px-3 py-6 text-center text-muted-foreground"
                   >
                     検索中...
@@ -109,7 +137,7 @@ export default function BaseCodeSettingsView({ initialData }: Props) {
               ) : data.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     className="px-3 py-6 text-center text-muted-foreground"
                   >
                     条件に一致する基本コードがありません。
@@ -122,6 +150,7 @@ export default function BaseCodeSettingsView({ initialData }: Props) {
                       {item.base_code}
                     </td>
                     <td className="px-3 py-3">{item.name}</td>
+                    <td className="px-3 py-3">{item.remarks}</td>
                     <td className="px-3 py-3">
                       <Badge variant={item.enabled ? "default" : "secondary"}>
                         {item.enabled ? "有効" : "無効"}

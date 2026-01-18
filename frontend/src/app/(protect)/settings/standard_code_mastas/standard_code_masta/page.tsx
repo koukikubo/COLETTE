@@ -4,7 +4,7 @@ import { useRouter, useParams } from "next/navigation";
 import SettingsHero from "@/components/settings/SettingsHero";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { StandardMasta } from "types/setting";
 
 export default function StandardMastaDetailPage() {

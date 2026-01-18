@@ -3,6 +3,7 @@ class StandardMasta < ApplicationRecord
 
   validates :base_code, presence: true, uniqueness: true
   validates :name, presence: true
+  SEAT_TYPE_CODE = "0004"
 
   def self.search(query: nil, enabled: nil)
     result = all

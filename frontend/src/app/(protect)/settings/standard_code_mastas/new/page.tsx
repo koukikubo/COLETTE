@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 
 const BASE_LIST_PATH = "/settings/admin?section=base";
 
