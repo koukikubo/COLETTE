@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  name: MyString
+  seat_type: MyString
+  capacity: 1
+  priority: 1
+  enabled: false
+  pos: MyString
+
+two:
+  code: MyString
+  name: MyString
+  seat_type: MyString
+  capacity: 1
+  priority: 1
+  enabled: false
+  pos: MyString
