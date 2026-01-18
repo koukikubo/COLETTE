@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import apiClient from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

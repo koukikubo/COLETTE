@@ -1,4 +1,4 @@
-class CustomerSerializer < ActiveModel::Serializer
+class Api::V1::CustomerSerializer < ActiveModel::Serializer
   attributes  :id,
               :family_name,
               :family_name_kana,

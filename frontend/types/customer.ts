@@ -23,3 +23,9 @@ export type CustomerFormState = {
   birthday: Date | undefined;
   memo: string;
 };
+
+export type Stats = {
+  total: number;
+  today: number;
+  vip?: number;
+};
