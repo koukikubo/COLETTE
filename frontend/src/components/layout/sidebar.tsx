@@ -103,7 +103,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {!isCollapsed && (
         <SidebarHeader className="p-2 pb-0">
           <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            {/* ⭐ Trigger 必須！ */}
             <PopoverTrigger asChild>
               <div className="rounded-md border bg-background shadow-sm overflow-hidden cursor-pointer">
                 <Calendar

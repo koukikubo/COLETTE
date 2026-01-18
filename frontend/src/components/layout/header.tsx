@@ -20,7 +20,7 @@ export function SiteHeader() {
           <Image
             src="/asai_light.jpg"
             alt="ロゴ"
-            width={65}
+            width={160}
             height={50}
             className="w-auto object-contain dark:hidden"
           />
@@ -28,7 +28,7 @@ export function SiteHeader() {
             src="/asai_logo.svg"
             alt="浅井顧客予約管理システム"
             width={180}
-            height={120}
+            height={50}
             className="object-contain hidden dark:block"
           />
         </Link>

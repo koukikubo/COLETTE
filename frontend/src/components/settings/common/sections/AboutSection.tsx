@@ -20,9 +20,7 @@ export default function AboutSection() {
         <CardDescription>COLETTE Platform v1.0.0</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          最終更新: 2025/11/01
-        </p>
+        <p className="text-sm text-muted-foreground">最終更新: 2025/11/01</p>
         <Button variant="outline" size="sm">
           リリースノート
         </Button>
