@@ -3,7 +3,9 @@ import { ssrFetch } from "@/lib/api/ssrAuth";
 import { StandardMasta } from "types/setting";
 
 async function getStandardMastas(): Promise<StandardMasta[]> {
-  return await ssrFetch("/setting/standard_code/standard_mastas");
+  return (await ssrFetch(
+    "/setting/standard_code/standard_mastas"
+  )) as StandardMasta[];
 }
 
 export default async function StandardMastaPage() {

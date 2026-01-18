@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "@/lib/isAxiosError";
 import { getErrorMessage } from "@/lib/getErrorMessage";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import type { Mypage } from "types/api";
 import { useMypage } from "@/hooks/useMypage";
 import { PrefectureSelect } from "@/components/View/mypage/prefecture-select";

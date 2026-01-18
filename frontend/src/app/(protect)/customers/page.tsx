@@ -1,17 +1,10 @@
 import { ssrFetch } from "@/lib/api/ssrAuth";
-import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import { apiClientWithSsrCookies } from "@/lib/api/base";
 import { cookies } from "next/headers";
-import { isAxiosError } from "@/lib/isAxiosError";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CustomerSearch from "@/components/View/customers/CustomerSearch";
-
-type Stats = {
-  total: number;
-  today: number;
-  vip?: number;
-};
+import { Stats } from "@/types/customer";
 
 export default async function Page() {
   await ssrFetch("/auth/session");
@@ -24,8 +17,9 @@ export default async function Page() {
     const res = await client.get<Stats>("/customer/customers/stats");
     stats = res.data;
   } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      const status = error.response?.status;
+    if (error && typeof error === "object" && "response" in error) {
+      const response = (error as { response?: { status: number } }).response;
+      const status = response?.status;
       if (status === 401 || status === 403) {
         throw error;
       }

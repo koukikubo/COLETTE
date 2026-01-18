@@ -11,14 +11,13 @@ type StandardMastaSearchParams = {
 };
 
 export function useStandardMasta(initialData: StandardMasta[] = []) {
-  // ← ⭐ 初期データを useState で保持
   const [data, setData] = useState<StandardMasta[]>(initialData);
 
   const { loading, error, search, reset } =
     useSearch<StandardMasta>(async (params: Record<string, unknown>) => {
       const { query = "", enabled = "" } = params as StandardMastaSearchParams;
       const result = await fetchStandardMastaApi(query, enabled);
-      setData(result); // ← ⭐ 検索結果を state に反映
+      setData(result);
       return result;
     });
 

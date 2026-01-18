@@ -8,7 +8,8 @@ class Api::V1::Setting::StandardCode::StandardMastasController < ApplicationCont
   codes = StandardMasta.search(
     query: keyword,
     enabled: params[:enabled]
-  )    
+  ).order(:base_code)    
+  
   render json: codes, each_serializer: Api::V1::StandardMastaSerializer
   end
 

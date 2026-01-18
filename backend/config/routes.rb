@@ -43,12 +43,13 @@ Rails.application.routes.draw do
         end
       end
 
-      namespace :reservation do
-        resources :registrations
-      end
+          resources :reservations do
+            collection do
+              get "seats", to: "seats#index"
+            end
+          end
 
-        
-
+          resources :tables, only: [:create, :index, :show, :update, :destroy] 
     end
   end
 end

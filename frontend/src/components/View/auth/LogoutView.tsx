@@ -1,6 +1,6 @@
 "use client";
 
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 
 export default function LogoutButton() {
   const handleLogout = async () => {

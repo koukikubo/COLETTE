@@ -12,18 +12,18 @@ export function useSearch<T>(
 
   const reset = () => {
     setData([]);
-    setError(null); // ← エラーも消す
+    setError(null);
   };
 
   const search = useCallback(
     async (params: Record<string, unknown> = {}) => {
-      if (loadingRef.current) return; // ← 多重実行回避
+      if (loadingRef.current) return;
 
       loadingRef.current = true;
 
       try {
         setLoading(true);
-        setError(null); // ← エラーメッセージを毎回クリア
+        setError(null);
         const res = await fetcher(params);
         setData(res);
       } catch (e) {

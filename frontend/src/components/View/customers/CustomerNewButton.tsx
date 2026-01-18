@@ -3,7 +3,7 @@ import { isAxiosError } from "@/lib/isAxiosError";
 import { Button } from "@/components/ui/button";
 import CustomerSearch from "./CustomerSearch";
 import { cookies } from "next/headers";
-import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import { apiClientWithSsrCookies } from "@/lib/api/base";
 
 type Stats = { total: number; today: number; vip?: number };
 

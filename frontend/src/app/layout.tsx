@@ -1,11 +1,10 @@
 import "./globals.css";
 import type { ReactNode } from "react";
-import { isAxiosError } from "@/lib/isAxiosError";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/settings/theme/theme-provider";
 import { UserProvider } from "@/contexts/UserContext";
 import { AppProviders } from "@/components/layout/AppProviders";
-import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import { apiClientWithSsrCookies } from "@/lib/api/base";
 import type { LoginResponse } from "types/api";
 
 export const metadata = {
@@ -30,14 +29,20 @@ async function loadInitialUser(cookieHeader: string | undefined) {
       withCredentials: true,
     });
     return data?.user ?? null;
-  } catch (error: unknown) {
-    if (isAxiosError(error)) {
-      const status = error.response?.status;
+  } catch (e: unknown) {
+    if (e && typeof e === "object" && "isAxiosError" in e && e.isAxiosError) {
+      const axiosError = e as {
+        response?: {
+          status?: number;
+          data?: { message?: string };
+        };
+      };
+      const status = axiosError.response?.status;
       if (status === 401 || status === 403) {
         return null;
       }
     }
-    console.error("Failed to load current session", error);
+    console.error("Failed to load current session", e);
     return null;
   }
 }

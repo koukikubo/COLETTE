@@ -4,15 +4,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { apiClient } from "@/lib/api/Client";
+import { createShopInfo, fetchShopInfo, updateShopInfo } from "@/lib/api/shop";
 
 interface ShopInfo {
   id?: number;
@@ -21,62 +14,50 @@ interface ShopInfo {
   address: string;
   business_hours: string;
   holiday: string;
-  tax_mode: string;
   notes?: string;
 }
 
 export default function ShopInfoSettingView() {
-  const [shopInfo, setShopInfo] = useState<ShopInfo>({
-    shop_name: "",
-    phone: "",
-    address: "",
-    business_hours: "",
-    holiday: "",
-    tax_mode: "内税",
-  });
+  const [shopInfo, setShopInfo] = useState<ShopInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // 店舗情報を取得
   useEffect(() => {
-    const fetchShopInfo = async () => {
+    const load = async () => {
       try {
-        const res = await apiClient.get<ShopInfo>("/setting/shop/shop_info");
-        setShopInfo(res.data);
-      } catch (error) {
-        console.error("店舗情報取得エラー:", error);
+        const data = await fetchShopInfo();
+        setShopInfo(data);
+      } catch (e) {
+        console.error("店舗情報取得エラー:", e);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchShopInfo();
+    load();
   }, []);
 
   const handleSubmit = async () => {
+    if (!shopInfo) return;
+
     try {
       setSaving(true);
       if (shopInfo.id) {
-        // 更新
-        await apiClient.put("/setting/shop/shop_info", {
-          shop_info: shopInfo,
-        });
+        await updateShopInfo(shopInfo);
       } else {
-        // 新規作成
-        await apiClient.post("/setting/shop/shop_info", {
-          shop_info: shopInfo,
-        });
+        await createShopInfo(shopInfo);
       }
+
       alert("店舗情報を保存しました。");
-    } catch (error) {
-      console.error("保存エラー:", error);
+    } catch (e) {
+      console.error("保存エラー:", e);
       alert("保存に失敗しました。");
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) {
+  if (loading || !shopInfo) {
     return <div className="p-8 text-center">読み込み中...</div>;
   }
 
@@ -142,25 +123,6 @@ export default function ShopInfoSettingView() {
               setShopInfo({ ...shopInfo, holiday: e.target.value })
             }
           />
-        </div>
-
-        {/* 税設定 */}
-        <div>
-          <Label>税設定</Label>
-          <Select
-            value={shopInfo.tax_mode}
-            onValueChange={(value) =>
-              setShopInfo({ ...shopInfo, tax_mode: value })
-            }
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="内税">内税</SelectItem>
-              <SelectItem value="外税">外税</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
 
         <div className="flex justify-end gap-2 pt-4">

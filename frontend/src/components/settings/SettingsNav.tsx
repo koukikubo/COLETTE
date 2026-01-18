@@ -8,7 +8,11 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/settings/common", label: "共通設定", description: "テーマや言語" },
-  { href: "/settings/admin", label: "システム管理", description: "店舗・マスタ管理" },
+  {
+    href: "/settings/admin",
+    label: "システム管理",
+    description: "店舗・マスタ管理",
+  },
 ];
 
 export default function SettingsNav() {
@@ -45,7 +49,9 @@ export default function SettingsNav() {
                 {link.label}
                 {active && <Sparkles className="size-3" />}
               </span>
-              <span className="text-xs text-muted-foreground">{link.description}</span>
+              <span className="text-xs text-muted-foreground">
+                {link.description}
+              </span>
             </Link>
           );
         })}

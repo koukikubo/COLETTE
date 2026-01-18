@@ -13,7 +13,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import apiClient from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { useRouter } from "next/navigation";
 
 export default function CustomerForm() {

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { isAxiosError } from "@/lib/isAxiosError";
 import { getErrorMessage } from "@/lib/getErrorMessage";
 import { SignupResponse } from "types/api";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { cn } from "@/lib/utils";
 import {
   Card,

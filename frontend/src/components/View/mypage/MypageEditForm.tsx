@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { Mypage } from "types/api";
 import { Button } from "@/components/ui/button";
 import { PrefectureSelect } from "./prefecture-select";
-import apiClient from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { useRouter } from "next/navigation";
 
 const textFields: { label: string; name: keyof Mypage; type: string }[] = [

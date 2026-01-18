@@ -1,4 +1,4 @@
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { Customer } from "types/customer";
 import { StandardMasta } from "types/setting";
 // 基本コードマスタ検索

@@ -1,9 +1,8 @@
-// frontend/src/app/mypage/hooks/useMypage.tsx
 "use client";
 
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { useUser } from "@/contexts/UserContext";
 import type { Mypage } from "types/api";
 

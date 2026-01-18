@@ -2,17 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Layers, Store, Utensils } from "lucide-react";
-
+import { Layers, Store } from "lucide-react";
 import BaseCodeSettingsView from "./admin/views/BaseCodeSettings";
-import MenuSettingsView from "./admin/views/MenuSettings";
 import ShopInfoSettingView from "./admin/views/ShopInfoSetting";
-
 import { useStandardMastaCount } from "@/hooks/useStandardMastaCount";
+import TableMastasView from "./admin/views/TableMastas";
 
 export default function SystemAdminSettings() {
   const count = useStandardMastaCount();
@@ -34,17 +31,23 @@ export default function SystemAdminSettings() {
         description: "システム共通の項目などを設定できます。",
       },
       {
-        title: "メニュー",
-        value: "Coming soon",
-        icon: Utensils,
-        description: "商品マスタや価格設定",
+        title: "テーブルマスタ",
+        value: "テーブルマスタ",
+        icon: Layers,
+        description: "予約テーブル管理ができます。",
       },
+      // {
+      //   title: "メニュー",
+      //   value: "Coming soon",
+      //   icon: Utensils,
+      //   description: "商品マスタや価格設定",
+      // },
     ],
     [count]
   );
 
-  type TabValue = "shop" | "base" | "menu";
-  const allowedTabs = useMemo<TabValue[]>(() => ["shop", "base", "menu"], []);
+  type TabValue = "shop" | "base" | "table";
+  const allowedTabs = useMemo<TabValue[]>(() => ["shop", "base", "table"], []);
   const resolveTab = useCallback(
     (value: string | null): TabValue => {
       return allowedTabs.includes(value as TabValue)
@@ -102,7 +105,8 @@ export default function SystemAdminSettings() {
         <TabsList className="grid w-full gap-2 bg-muted/40 p-1 md:grid-cols-3">
           <TabsTrigger value="shop">店舗情報</TabsTrigger>
           <TabsTrigger value="base">基本コード</TabsTrigger>
-          <TabsTrigger value="menu">メニュー</TabsTrigger>
+          <TabsTrigger value="table">テーブルマスタ</TabsTrigger>
+          {/* <TabsTrigger value="menu">メニュー</TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="shop" className="space-y-4">
@@ -116,9 +120,13 @@ export default function SystemAdminSettings() {
           <BaseCodeSettingsView initialData={[]} />
         </TabsContent>
 
-        <TabsContent value="menu">
-          <MenuSettingsView />
+        <TabsContent value="table">
+          <TableMastasView initialData={[]} />
         </TabsContent>
+
+        {/* <TabsContent value="menu">
+          <MenuSettingsView />
+        </TabsContent> */}
       </Tabs>
     </div>
   );

@@ -2,22 +2,21 @@ import axios from "axios";
 
 function getBaseURL() {
   const isServer = typeof window === "undefined";
-  const internal = process.env.INTERNAL_API_URL; // 例: http://backend:3001/api/v1
-  const publicUrl = process.env.NEXT_PUBLIC_API_URL; // 例: http://localhost:3001/api/v1
+  const internal = process.env.INTERNAL_API_URL;
+  const publicUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const defaultServerBase =
     process.env.NODE_ENV === "production"
       ? "http://backend:3001/api/v1"
       : "http://localhost:3001/api/v1";
+
   const defaultClientBase = "http://localhost:3001/api/v1";
 
-  if (isServer) {
-    return internal ?? publicUrl ?? defaultServerBase;
-  }
-
-  return publicUrl ?? internal ?? defaultClientBase;
+  return isServer
+    ? internal ?? publicUrl ?? defaultServerBase
+    : publicUrl ?? internal ?? defaultClientBase;
 }
 
-// ブラウザ用／SSR共通（ブラウザで使うときはこちらをそのまま使う）
 export const apiClient = axios.create({
   baseURL: getBaseURL(),
   withCredentials: true,
@@ -27,17 +26,14 @@ export const apiClient = axios.create({
   },
 });
 
-// ★SSRで使うときは Cookie を手動で乗せたクライアントを作る
 export function apiClientWithSsrCookies(cookieHeader: string) {
   return axios.create({
     baseURL: getBaseURL(),
     withCredentials: true,
     headers: {
-      Cookie: cookieHeader, // ← これが重要
+      Cookie: cookieHeader,
       "Content-Type": "application/json",
       Accept: "application/json",
     },
   });
 }
-
-export default apiClient;
