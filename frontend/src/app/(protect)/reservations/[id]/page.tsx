@@ -1,24 +1,38 @@
-export default function ReservationShowPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+"use client";
+
+import { useEffect, useState } from "react";
+import { ReservationTimeline } from "@/components/View/reservations/ReservationTimeline";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
+import type { Reservation } from "@/types/reservation";
+
+export default function ReservationDetailTimeline({ date }: { date: string }) {
+  const [open, setOpen] = useState(true);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+
+  useEffect(() => {
+    fetch(`/api/v1/reservations?date=${date}`)
+      .then((res) => res.json())
+      .then(setReservations);
+  }, [date]);
 
   return (
-    <div className="container mx-auto py-8 space-y-4">
-      <h1 className="text-2xl font-bold mb-2">予約詳細</h1>
-      <p className="text-sm text-muted-foreground mb-4">
-        ID: <span className="font-mono">{id}</span>
-      </p>
+    <div className="p-4 space-y-4">
+      <Collapsible open={open} onOpenChange={setOpen}>
+        <CollapsibleTrigger asChild>
+          <Button variant="outline">
+            {open ? "閉じる" : "開く"} タイムライン
+          </Button>
+        </CollapsibleTrigger>
 
-      {/* ここに後で予約の詳細情報を SSR / CSR で埋め込んでいく */}
-      <div className="rounded-lg border p-4 space-y-2">
-        <div>顧客名: （APIから取得）</div>
-        <div>日付: （APIから取得）</div>
-        <div>時間: （APIから取得）</div>
-        <div>メニュー: （APIから取得）</div>
-      </div>
+        <CollapsibleContent className="mt-4">
+          <ReservationTimeline reservations={reservations} seats={[]} />
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }
