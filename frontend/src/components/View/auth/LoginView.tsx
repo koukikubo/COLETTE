@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
-import { apiClient } from "@/lib/api/Client";
+import { apiClient } from "@/lib/api/base";
 import { LoginResponse } from "types/api";
 import { cn } from "@/lib/utils";
 import {

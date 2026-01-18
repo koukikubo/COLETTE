@@ -1,17 +1,22 @@
 "use client";
 
+import type { ReactNode } from "react";
+import { useSelectedLayoutSegment } from "next/navigation";
+
 export default function ReservationsLayout({
   children,
   modal,
 }: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
+  children: ReactNode;
+  modal: ReactNode;
 }) {
+  const modalSegment = useSelectedLayoutSegment("modal");
+
   return (
-    <div className="relative">
+    <div className="relative overflow-x-hidden">
       {children}
 
-      {modal && (
+      {modalSegment && modal && (
         <div className="fixed inset-0 z-50 flex justify-end pointer-events-none">
           <div className="pointer-events-auto">{modal}</div>
         </div>
