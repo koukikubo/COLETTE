@@ -2,7 +2,7 @@ import { isAxiosError } from "@/lib/isAxiosError";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { MypageView } from "@/components/View/mypage/MypageView";
-import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import { apiClientWithSsrCookies } from "@/lib/api/base";
 import type { Mypage } from "types/api";
 
 export default async function OtherMypage({

@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { MypageEditForm } from "@/components/View/mypage/MypageEditForm";
 import type { Mypage } from "types/api";
-import { apiClientWithSsrCookies } from "@/lib/api/Client";
+import { apiClientWithSsrCookies } from "@/lib/api/base";
 
 type MypageResponse = {
   mypage: Mypage | null;
