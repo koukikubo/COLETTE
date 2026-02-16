@@ -1,24 +1,19 @@
-Post.create!(
-  [
-    { title: '野球のルール基礎知識' },
-    { title: 'プロ野球選手のトレーニング方法' },
-    { title: '野球の歴史とは' },
-    { title: 'メジャーリーグと日本プロ野球の違い' },
-    { title: '野球用具の選び方' },
-    { title: '野球のポジション紹介' },
-    { title: '野球の戦術入門' },
-    { title: '子供向け野球教室の選び方' },
-    { title: '高校野球の魅力' },
-    { title: '野球観戦の楽しみ方' },
-    { title: '野球のスコアブックのつけ方' },
-    { title: '野球の審判の役割' },
-    { title: '野球におけるピッチングの技術' },
-    { title: 'バッティングの基本' },
-    { title: '野球の名言集' },
-    { title: '野球のトレーニング用品紹介' },
-    { title: '野球選手の食事管理' },
-    { title: '野球の怪我の予防と対処法' },
-    { title: '野球の上達法' },
-    { title: '野球の国際大会について' }
-  ]
-)
+[
+  { base_code: "0001", name: "顧客ランク", enabled: true, remarks: "顧客ランク管理用" },
+  { base_code: "0002", name: "性別",     enabled: true, remarks: "性別分類" }
+].each do |attrs|
+  StandardMasta.find_or_create_by!(base_code: attrs[:base_code]) do |record|
+    record.name    = attrs[:name]
+    record.enabled = attrs[:enabled]
+    record.remarks = attrs[:remarks]
+  end
+end
+
+# ② 4桁の連番（0003〜1999）を一気に投入 ※存在すればスキップ
+(3..1999).each do |i|
+  StandardMasta.find_or_create_by!(base_code: format("%04d", i)) do |record|
+    record.name    = "-"
+    record.enabled = true
+    record.remarks = "-"
+  end
+end

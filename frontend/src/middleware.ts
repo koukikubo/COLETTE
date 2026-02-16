@@ -1,31 +1,21 @@
-// frontend/src/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Railsの実際のセッションクッキー名に置き換えてください
-const SESSION_KEY = "_colette_session"; // 例
+const SESSION_COOKIE_NAME =
+  process.env.NEXT_PUBLIC_SESSION_COOKIE_NAME ?? "_coretto_session";
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const session = req.cookies.get(SESSION_COOKIE_NAME);
 
-  // 認証不要なパスは除外
   if (
-    pathname.startsWith("/auth") || // ログイン/新規登録など
+    pathname.startsWith("/auth") ||
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.startsWith("/favicon") ||
-    pathname.startsWith("/assets")
+    pathname.startsWith("/api")
   ) {
     return NextResponse.next();
   }
 
-  // 認証が必要なパスだけチェック（実URLで）
-  const needsAuth =
-    pathname.startsWith("/mypage") || pathname.startsWith("/settings");
-
-  if (!needsAuth) return NextResponse.next();
-
-  const session = req.cookies.get(SESSION_KEY)?.value;
   if (!session) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
@@ -34,5 +24,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|favicon|assets).*)"], // もしくは "/:path*"
+  matcher: ["/((?!_next|api|favicon|assets|reservations).*)"],
 };

@@ -1,0 +1,9 @@
+ja:
+  hello: "こんにちは"
+  activerecord:
+    models:
+      customer: 顧客
+    attributes:
+      customer:
+        family_name: 姓
+        given_name: 名

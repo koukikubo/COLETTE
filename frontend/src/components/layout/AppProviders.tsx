@@ -1,10 +1,9 @@
-// components/layout/AppProviders.tsx
 "use client";
 
 import * as React from "react";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import SiteHeader from "@/components/layout/site-header";
+import { AppSidebar } from "@/components/layout/sidebar";
+import SiteHeader from "@/components/layout/header";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -25,6 +24,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       }
     >
       <AppSidebar />
+
       <SidebarInset>
         <SiteHeader />
         {children}

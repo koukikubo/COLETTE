@@ -12,12 +12,20 @@ export type UserContextType = {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
+type UserProviderProps = {
+  children: React.ReactNode;
+  initialUser?: User | null;
+};
+
 export const UserContext = createContext<UserContextType | undefined>(
   undefined
 );
 
-export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+export function UserProvider({
+  children,
+  initialUser = null,
+}: UserProviderProps) {
+  const [user, setUser] = useState<User | null>(initialUser);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
