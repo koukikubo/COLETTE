@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import { cookies } from "next/headers";
-import { ThemeProvider } from "@/components/settings/theme/theme-provider";
+import { ThemeProvider } from "@/components/features/settings/theme/theme-provider";
 import { UserProvider } from "@/contexts/UserContext";
 import { AppProviders } from "@/components/layout/AppProviders";
 import { apiClientWithSsrCookies } from "@/lib/api/base";

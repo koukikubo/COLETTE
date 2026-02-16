@@ -7,7 +7,7 @@ import { StandardMasta } from "@/types/setting";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import SettingsHero from "@/components/settings/SettingsHero";
+import SettingsHero from "@/components/features/settings/layout/SettingsHero";
 import { Badge } from "@/components/ui/badge";
 
 export default function StandardMastaEditPage() {
@@ -39,7 +39,7 @@ export default function StandardMastaEditPage() {
           name,
           base_code: baseCode,
           enabled,
-        }
+        },
       );
 
       router.push("/settings/admin?section=base");

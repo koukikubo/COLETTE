@@ -1,5 +1,5 @@
-import SystemCommonSettings from "@/components/settings/common/SystemCommonSetting";
-import SettingsHero from "@/components/settings/SettingsHero";
+import SystemCommonSettings from "@/components/features/settings/layout/SystemCommonSetting";
+import SettingsHero from "@/components/features/settings/layout/SettingsHero";
 
 export default function SettingsCommonPage() {
   return (

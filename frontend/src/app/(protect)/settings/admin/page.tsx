@@ -1,5 +1,5 @@
-import SystemAdminSettings from "@/components/settings/SystemAdminSettings";
-import SettingsHero from "@/components/settings/SettingsHero";
+import SystemAdminSettings from "@/components/features/settings/layout/SystemAdminSettings";
+import SettingsHero from "@/components/features/settings/layout/SettingsHero";
 import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
 import Loading from "./loading";

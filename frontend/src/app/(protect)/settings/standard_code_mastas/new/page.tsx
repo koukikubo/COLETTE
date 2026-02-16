@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import SettingsHero from "@/components/settings/SettingsHero";
+import SettingsHero from "@/components/features/settings/layout/SettingsHero";
 import {
   Card,
   CardContent,
@@ -56,7 +56,7 @@ export default function StandardCodeNewPage() {
       setLoading(true);
       setMessage(null);
       const res = await apiClient.get<{ base_code: string }>(
-        "/setting/standard_code/standard_mastas/next_code"
+        "/setting/standard_code/standard_mastas/next_code",
       );
       setForm({
         base_code: res.data.base_code,
@@ -148,7 +148,7 @@ export default function StandardCodeNewPage() {
             value={form.name}
             onChange={(e) =>
               setForm((prev) =>
-                prev ? { ...prev, name: e.target.value } : prev
+                prev ? { ...prev, name: e.target.value } : prev,
               )
             }
             placeholder="例: 顧客ランク"
@@ -164,7 +164,7 @@ export default function StandardCodeNewPage() {
             value={form.remarks}
             onChange={(e) =>
               setForm((prev) =>
-                prev ? { ...prev, remarks: e.target.value } : prev
+                prev ? { ...prev, remarks: e.target.value } : prev,
               )
             }
             placeholder="メモや補足情報"

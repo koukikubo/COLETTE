@@ -1,11 +1,11 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import SettingsHero from "@/components/settings/SettingsHero";
+import SettingsHero from "@/components/features/settings/layout/SettingsHero";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api/base";
-import { StandardMasta } from "types/setting";
+import { StandardMasta } from "types/standard";
 
 export default function StandardMastaDetailPage() {
   const { code_id } = useParams<{
@@ -19,7 +19,7 @@ export default function StandardMastaDetailPage() {
 
     const fetch = async () => {
       const res = await apiClient.get<StandardMasta>(
-        `/setting/standard_code/standard_mastas/${code_id}`
+        `/setting/standard_code/standard_mastas/${code_id}`,
       );
       setData(res.data);
     };

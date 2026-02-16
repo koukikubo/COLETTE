@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUser } from "@/contexts/UserContext";
 import { Button } from "@/components/ui/button";
-import LogoutButton from "@/components/View/auth/LogoutView";
+import LogoutButton from "@/components/features/auth/LogoutView";
 
 import { FaUserCog, FaCalendarCheck, FaBullseye, FaUser } from "react-icons/fa";
 import { IoSearch, IoSettingsOutline } from "react-icons/io5";
@@ -243,7 +243,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 className={`flex items-center justify-center rounded-full bg-muted font-medium 
                   ${isCollapsed ? "size-9" : "size-10"}`}
               >
-                {user ? user.email?.[0]?.toUpperCase() ?? "U" : "?"}
+                {user ? (user.email?.[0]?.toUpperCase() ?? "U") : "?"}
               </div>
 
               {!isCollapsed && (

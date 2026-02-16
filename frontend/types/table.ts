@@ -1,4 +1,5 @@
 export type Table = {
+  enabled: boolean;
   id: number;
   code: string;
   name: string;

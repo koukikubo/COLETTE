@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StandardListMasta } from "types/setting";
+import { StandardListMasta } from "types/standard";
 
 export default function StandardListEditPage() {
   const params = useParams<{ code_id: string; code_list_id: string }>();
@@ -41,7 +41,7 @@ export default function StandardListEditPage() {
       try {
         setLoading(true);
         const res = await apiClient.get<StandardListMasta>(
-          `/setting/standard_code/standard_mastas/${params.code_id}/standard_list_mastas/${params.code_list_id}`
+          `/setting/standard_code/standard_mastas/${params.code_id}/standard_list_mastas/${params.code_list_id}`,
         );
         const data = res.data;
 
@@ -79,12 +79,12 @@ export default function StandardListEditPage() {
             remarks: form.remarks,
             enabled: form.enabled === "true",
           },
-        }
+        },
       );
 
       alert("更新しました");
       router.push(
-        `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas`
+        `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas`,
       );
     } catch (error) {
       console.error("更新エラー:", error);
@@ -172,7 +172,7 @@ export default function StandardListEditPage() {
                 variant="outline"
                 onClick={() =>
                   router.push(
-                    `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas`
+                    `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas`,
                   )
                 }
               >

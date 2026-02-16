@@ -1,20 +1,26 @@
-// app/customers/[id]/page.tsx
-import { ssrFetch } from "@/lib/api/ssrAuth";
+import { customerSsr } from "@/lib/api/customer/index";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Edit, User, Phone, Mail, Calendar } from "lucide-react";
 import { CiMemoPad } from "react-icons/ci";
+import type { CustomerDetail } from "@/types/customer";
+import { notFound } from "next/navigation";
 
-type PageProps = {
+type CustomerID = {
   params: {
     id: string;
   };
 };
 
-export default async function CustomerPage({ params }: PageProps) {
-  await ssrFetch("/auth/session");
+export default async function CustomerPage({ params }: CustomerID) {
+  let customer: CustomerDetail;
 
-  const customer = await ssrFetch(`/customer/customers/${params.id}`);
+  try {
+    customer = await customerSsr.fetchCustomerById(params.id);
+  } catch (error) {
+    console.error(error);
+    notFound();
+  }
 
   return (
     <div className="space-y-6 p-6 max-w-2xl mx-auto">

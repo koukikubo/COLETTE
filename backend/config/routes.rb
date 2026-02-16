@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      resources :reservations, except: [:new, :edit]
+      resource :reservation_masters, only: [:show]
+      resources :tables, only: [:create, :index, :show, :update, :destroy] 
+      resources :notifications, only: [:index, :show]
+
+      namespace :admin do
+        resources :users
+        resources :notifications
+      end
       namespace :auth do
         post   "login",   to: "sessions#create"
         delete "logout",  to: "sessions#destroy"
@@ -42,14 +51,6 @@ Rails.application.routes.draw do
           resource :shop_info, only: [:show, :create, :update]
         end
       end
-
-          resources :reservations do
-            collection do
-              get "seats", to: "seats#index"
-            end
-          end
-
-          resources :tables, only: [:create, :index, :show, :update, :destroy] 
-    end
+      end
   end
 end

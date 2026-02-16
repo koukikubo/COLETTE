@@ -66,7 +66,6 @@ class Api::V1::Customer::CustomersController < ApplicationController
       :given_name_kana,
       :phone1,
       :phone2,
-      # :customer_rank_id,
       :email,
       :memo,
       :birthday

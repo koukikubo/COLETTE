@@ -1,30 +1,10 @@
-import { ssrFetch } from "@/lib/api/ssrAuth";
-import { apiClientWithSsrCookies } from "@/lib/api/base";
-import { cookies } from "next/headers";
+import { customerSsr } from "@/lib/api/customer/index";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import CustomerSearch from "@/components/View/customers/CustomerSearch";
-import { Stats } from "@/types/customer";
+import CustomerSearch from "@/components/features/customers/components/CustomerSearch";
 
 export default async function Page() {
-  await ssrFetch("/auth/session");
-
-  const cookieHeader = cookies().toString();
-  const client = apiClientWithSsrCookies(cookieHeader);
-
-  let stats: Stats = { total: 0, today: 0 };
-  try {
-    const res = await client.get<Stats>("/customer/customers/stats");
-    stats = res.data;
-  } catch (error: unknown) {
-    if (error && typeof error === "object" && "response" in error) {
-      const response = (error as { response?: { status: number } }).response;
-      const status = response?.status;
-      if (status === 401 || status === 403) {
-        throw error;
-      }
-    }
-  }
+  const stats = await customerSsr.fetchCustomerStats();
 
   return (
     <div className="p-6 space-y-6">
@@ -47,7 +27,6 @@ export default async function Page() {
 
         <div className="rounded-lg border p-4">
           <h2 className="text-sm text-muted-foreground">VIP顧客</h2>
-          {/* <p className="text-2xl font-bold">{stats.vip}</p> */}
         </div>
       </div>
 

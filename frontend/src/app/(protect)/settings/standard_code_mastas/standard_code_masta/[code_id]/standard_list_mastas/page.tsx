@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { apiClient } from "@/lib/api/base";
-import { StandardMasta, StandardListMasta } from "types/setting";
+import { StandardMasta, StandardListMasta } from "types/standard";
 
 export default function StandardListMastasPage() {
   const params = useParams<{ code_id: string }>();
@@ -31,13 +31,13 @@ export default function StandardListMastasPage() {
 
         // 基本コード情報を取得
         const parentRes = await apiClient.get<StandardMasta>(
-          `/setting/standard_code/standard_mastas/${params.code_id}`
+          `/setting/standard_code/standard_mastas/${params.code_id}`,
         );
         setParentData(parentRes.data);
 
         // 選択肢コード一覧を取得
         const childRes = await apiClient.get<StandardListMasta[]>(
-          `/setting/standard_code/standard_mastas/${params.code_id}/standard_list_mastas`
+          `/setting/standard_code/standard_mastas/${params.code_id}/standard_list_mastas`,
         );
         setChildData(childRes.data);
       } catch (error) {
@@ -114,7 +114,7 @@ export default function StandardListMastasPage() {
           <Button
             onClick={() =>
               router.push(
-                `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas/new`
+                `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas/new`,
               )
             }
           >
@@ -130,7 +130,7 @@ export default function StandardListMastasPage() {
                 className="mt-4"
                 onClick={() =>
                   router.push(
-                    `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas/new`
+                    `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas/new`,
                   )
                 }
               >
@@ -172,7 +172,7 @@ export default function StandardListMastasPage() {
                           variant="outline"
                           onClick={() =>
                             router.push(
-                              `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas/standard_list_masta/${item.id}/edit`
+                              `/settings/standard_code_mastas/standard_code_masta/${params.code_id}/standard_list_mastas/standard_list_masta/${item.id}/edit`,
                             )
                           }
                         >

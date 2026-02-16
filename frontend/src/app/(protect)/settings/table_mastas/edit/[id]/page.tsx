@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Table } from "@/types/table";
-import { fetchTableEdit, updateTable, deleteTable } from "@/lib/api/table";
+import {
+  fetchTableEdit,
+  updateTable,
+  deleteTable,
+} from "@/lib/api/table/csr/tables";
 
 import {
   Card,
@@ -114,7 +118,9 @@ export default function TableEditPage({ params }: Props) {
       setDeleting(false);
     }
   };
-
+  if (loading) {
+    return <Card className="shadow-sm p-8 text-center">読み込み中...</Card>;
+  }
   return (
     <Card className="shadow-sm">
       <CardHeader>

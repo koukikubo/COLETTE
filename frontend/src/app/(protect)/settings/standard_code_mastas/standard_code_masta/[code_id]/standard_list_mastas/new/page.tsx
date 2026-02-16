@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StandardListMasta } from "types/setting";
+import { StandardListMasta } from "types/standard";
 
 export default function StandardListNewPage() {
   const params = useParams<{ code_id: string }>();

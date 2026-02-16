@@ -1,4 +1,4 @@
-import TableMastas from "@/components/settings/admin/views/TableMastas";
+import TableMastas from "@/components/features/settings/masters/TableMastas";
 import { ssrFetch } from "@/lib/api/ssrAuth";
 import { Table } from "@/types/table";
 

@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import { apiClient } from "@/lib/api/base";
 import { useUser } from "@/contexts/UserContext";
-import type { Mypage } from "types/api";
+import type { Mypage } from "types/mypages";
 
 interface MypageResponse {
   user: {
@@ -37,7 +37,7 @@ export function useMypage() {
         // 認証エラー（401）の場合はログインページへ遷移
         if (err?.response?.status === 401) router.push("/auth/login");
       },
-    }
+    },
   );
 
   return {

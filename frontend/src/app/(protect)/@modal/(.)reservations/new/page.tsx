@@ -1,6 +1,6 @@
 "use client";
 
-import { ReservationCreateModal } from "@/components/View/reservations/ReservationCreateModal";
+import { NewPage } from "@/components/features/reservations/forms/NewPage";
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -8,8 +8,8 @@ export default function ReservationNewModal() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const dateParam = searchParams.get("date");
-  const date = dateParam ?? new Date().toISOString().slice(0, 10);
+  const date =
+    searchParams.get("date") ?? new Date().toISOString().slice(0, 10);
 
   return (
     <div className="fixed inset-0 flex justify-end z-50">
@@ -27,14 +27,7 @@ export default function ReservationNewModal() {
       >
         <div className="p-6">
           <h2 className="text-xl font-bold mb-4">新規予約</h2>
-
-          <ReservationCreateModal
-            date={date}
-            onSuccess={() => {
-              router.refresh(); // 一覧再取得
-              router.back();
-            }}
-          />
+          <NewPage date={date} />
         </div>
       </motion.div>
     </div>

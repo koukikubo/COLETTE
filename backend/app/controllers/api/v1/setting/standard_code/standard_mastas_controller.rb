@@ -9,8 +9,18 @@ class Api::V1::Setting::StandardCode::StandardMastasController < ApplicationCont
     query: keyword,
     enabled: params[:enabled]
   ).order(:base_code)    
+  .page(params[:page])
+  .per(params[:per] || 10)
   
-  render json: codes, each_serializer: Api::V1::StandardMastaSerializer
+  render json: {
+    data: codes,
+    meta: {
+      current_page: codes.current_page,
+      total_pages: codes.total_pages,
+      total_count: codes.total_count,
+    },
+  },  
+    each_serializer: Api::V1::StandardMastaSerializer
   end
 
   def next_code

@@ -20,7 +20,7 @@ export async function fetchReservation(id: number): Promise<Reservation> {
 /** 予約更新 */
 export async function updateReservation(
   id: number,
-  payload: CreateReservationPayload
+  payload: CreateReservationPayload,
 ): Promise<Reservation> {
   const res = await apiClient.patch<Reservation>(`/reservations/${id}`, {
     reservation: payload,
@@ -28,9 +28,13 @@ export async function updateReservation(
   return res.data;
 }
 
+export async function deleteReservation(id: number): Promise<void> {
+  await apiClient.delete(`/reservations/${id}`);
+}
+
 /** 予約作成 */
 export async function createReservation(
-  payload: CreateReservationPayload
+  payload: CreateReservationPayload,
 ): Promise<Reservation> {
   const res = await apiClient.post<Reservation>("/reservations", {
     reservation: payload,

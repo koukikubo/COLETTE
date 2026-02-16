@@ -1,4 +1,4 @@
-import type { Seat } from "@/types/reservation";
+import type { Seat } from "@/types/seat";
 
 export const SEATS: Seat[] = [
   // カウンター

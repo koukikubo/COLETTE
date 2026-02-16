@@ -1,4 +1,4 @@
-import ReservationEditPageContent from "@/components/View/reservations/ReservationEditPageContent";
+import ReservationEditPageContent from "@/components/features/reservations/forms/EditPage";
 
 export default function ReservationEditPage({
   params,

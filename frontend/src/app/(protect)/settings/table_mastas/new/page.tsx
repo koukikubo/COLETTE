@@ -12,7 +12,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-import { createTable } from "@/lib/api/table";
+import { createTable } from "@/lib/api/table/csr/tables";
 
 export default function TableMastasNewPage() {
   const router = useRouter();
@@ -32,6 +32,7 @@ export default function TableMastasNewPage() {
         seat_type: seatType,
         capacity,
         code: "",
+        enabled: false,
       });
 
       router.push("/settings/admin?section=table");

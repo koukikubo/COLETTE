@@ -1,7 +1,6 @@
 class Api::V1::ReservationsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
-
   def index
     date_str = params[:date]
     date = date_str.present? ? Date.parse(date_str) : Date.current
@@ -10,8 +9,8 @@ class Api::V1::ReservationsController < ApplicationController
       .includes(reservation_seats: :table)
       .where(start_at: date.beginning_of_day..date.end_of_day)
 
-      render json: reservations, each_serializer: Api::V1::ReservationSerializer  end
-  
+      render json: reservations, each_serializer: Api::V1::ReservationSerializer 
+  end
 
   def show
     reservation = Reservation.includes(reservation_seats: :table).find(params[:id])
@@ -52,6 +51,12 @@ class Api::V1::ReservationsController < ApplicationController
     reservation = Reservation.includes(reservation_seats: :table).find(reservation.id)
     render json: reservation, serializer: Api::V1::ReservationSerializer
   end
+
+  def destroy
+    reservation = Reservation.find(params[:id])
+    reservation.destroy
+    head :no_content
+  end 
 
   private
 

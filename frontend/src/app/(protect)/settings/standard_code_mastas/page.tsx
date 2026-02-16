@@ -1,10 +1,10 @@
-import BaseCodeSettingsView from "@/components/settings/admin/views/BaseCodeSettings";
+import BaseCodeSettingsView from "@/components/features/settings/masters/BaseCodeSettings";
 import { ssrFetch } from "@/lib/api/ssrAuth";
-import { StandardMasta } from "types/setting";
+import { StandardMasta } from "types/standard";
 
 async function getStandardMastas(): Promise<StandardMasta[]> {
   return (await ssrFetch(
-    "/setting/standard_code/standard_mastas"
+    "/setting/standard_code/standard_mastas",
   )) as StandardMasta[];
 }
 
@@ -17,8 +17,6 @@ export default async function StandardMastaPage() {
       <p className="text-sm text-muted-foreground">
         顧客ランクやメニュー分類など、各機能で使用する共通コードを管理します。
       </p>
-
-      {/* CSRコンポーネントへ"初期データだけ"渡す */}
       <BaseCodeSettingsView initialData={codes} />
     </div>
   );

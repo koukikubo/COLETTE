@@ -1,4 +1,4 @@
-import { fetchStandardListByBaseCode } from "@/lib/api/fetchStandardListByBaseCode";
+import { fetchStandardListByBaseCode } from "@/lib/api/reservation/csr/fetchStandardListByBaseCode";
 import { StandardListItem } from "@/types/standard";
 import { useEffect, useState } from "react";
 
@@ -14,10 +14,10 @@ export const STANDARD_CODES = {
 } as const;
 
 export function useReservationMasters() {
-  const [menuTypes, setMenuTypes] = useState<StandardListItem[]>([]);
+  const [menu_types, setMenuTypes] = useState<StandardListItem[]>([]);
   const [courses, setCourses] = useState<StandardListItem[]>([]);
   const [allergies, setAllergies] = useState<StandardListItem[]>([]);
-  const [guestTypes, setGuestTypes] = useState<StandardListItem[]>([]);
+  const [guest_types, setGuestTypes] = useState<StandardListItem[]>([]);
   const [status, setStatus] = useState<StandardListItem[]>([]);
   const [seats, setSeats] = useState<StandardListItem[]>([]);
   const [purpose, setPurpose] = useState<StandardListItem[]>([]);
@@ -35,10 +35,10 @@ export function useReservationMasters() {
   }, []);
 
   return {
-    menuTypes,
+    menu_types,
     courses,
     allergies,
-    guestTypes,
+    guest_types,
     status,
     seats,
     purpose,
